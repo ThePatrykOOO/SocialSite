@@ -1,0 +1,46 @@
+body {
+  padding-top: 50px;
+  max-width: 1800px;
+}
+nav {
+	margin: auto;
+}
+.container {
+	margin: auto;
+}
+.starter-template {
+  padding: 40px 15px;
+  text-align: center;
+}
+h4 small {
+	padding-left: 10px;
+}
+.yourProfil {
+	padding: 4px;
+}
+.fa-male {
+	display: inline-block;
+}
+.dropdownBlank {
+	border: none;
+	background: #fff;
+}
+.dropButton {
+	display: inline-block;
+}
+.center-text {
+	text-align: center;
+}
+.dropAdd,.messageTop  {
+	width: 200px;
+}
+.dropdown-menu .dropAdd a {
+	display: inline-block;
+}
+.messageTop p {
+	padding: 0 20px;
+	font-size: 12px;
+}
+footer {
+	text-align: center;
+}
