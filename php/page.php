@@ -33,7 +33,7 @@ class Page extends Connect
 				$_SESSION['fullName'] = $_SESSION['name']." ".$_SESSION['surname'];
 
 				unset($_SESSION['errorLogin']);
-				header('location: main');
+				header('location: user/main');
 
 	      	} else {
 				$_SESSION['errorLogin'] = ["Nie znaleziono użytkownika o takim loginie i haśle!"];

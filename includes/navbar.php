@@ -14,10 +14,10 @@
       <div id="navbar" class="collapse navbar-collapse">
         <ul class="nav navbar-nav">
         	<li data-toggle="tooltip" title="Strona Główna">
-            <a href="#"><b class="fa a-home"></b></a>
+            <a href="main"><b class="fa a-home"></b></a>
           </li>
           <li data-toggle="tooltip" title="Profil">
-            <a href="#"><b class="fa fa-user-o"></b></a>
+            <a href="moj-profil"><b class="fa fa-user-o"></b></a>
           </li>
           <li data-toggle="tooltip" title="Wiadomości">
             <a class="dropdown-toggle" data-toggle="dropdown"><b class="fa fa-commenting-o"></b></a>
@@ -34,7 +34,7 @@
           <li data-toggle="tooltip" title="Zaproszenia">
             <a class="dropdown-toggle" data-toggle="dropdown"><b class="fa fa-user-plus"></b></a>
             <ul class="dropdown-menu">
-              <h5><small>Zaproszenia</small></h5>
+              <h5><small><a href="zaproszenia">Zaproszenia</a></small></h5>
               <li class="dropAdd">
                 <a href="#">Patryk Filipiak</a>
                 <button type="button" class="btn btn-success btn-xs"><i class="fa fa-check"></i></button>
@@ -45,14 +45,14 @@
           <li class="dropdown" data-toggle="tooltip" title="Opcje">
             <a class="dropdown-toggle" data-toggle="dropdown"><b class="fa fa-cog"></b></a>
             <ul class="dropdown-menu">
-              <li><a href="#">Utwórz Stronę</a></li>
-              <li><a href="#">Utwórz Grupę</a></li>
-              <li><a href="#">Ustawienia</a></li>
-              <li><a href="#">Wyloguj się</a></li>
+              <li><a href="stworz-strone">Utwórz Stronę</a></li>
+              <li><a href="stworz-grupe">Utwórz Grupę</a></li>
+              <li><a href="ustawienia">Ustawienia</a></li>
+              <li><a href="../php/logout.php">Wyloguj się</a></li>
             </ul>
           </li>
           <li data-toggle="tooltip" title="Wyloguj Się">
-            <a href="#"><b class="fa fa-sign-in"></b></a>
+            <a href="../php/logout.php"><b class="fa fa-sign-in"></b></a>
           </li>
         </ul>
       </div><!--/.nav-collapse -->

@@ -16,5 +16,13 @@ ErrorDocument 503 http://localhost/social/500.shtml
 ErrorDocument 504 http://localhost/social/500.shtml
 
 
-RewriteRule main index.php
-RewriteRule welcome hello.php
+RewriteRule welcome index.php
+RewriteRule main user/index.php
+RewriteRule moj-profil user/myprofil.php
+RewriteRule stworz-grupe user/createGroup.php
+RewriteRule stworz-strone user/createSite.php
+RewriteRule zaproszenia user/newfriend.php
+RewriteRule zapisane user/saved.php
+RewriteRule ustawienia user/settings.php
+RewriteRule edytuj-profil user/profil-edit.php
+
