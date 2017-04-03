@@ -1,7 +1,7 @@
 <?php
-	require '../php/page.php';
-	$page = new Page;
-	$page->youlogged();
+	require '../php/user.php';
+	use User\User;
+	\User\User::youlogged();
 ?>
 <!DOCTYPE html>
 <html>

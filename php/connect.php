@@ -2,16 +2,18 @@
 /**
 * Połączenie się z bazą
 */
+namespace Connect;
+use PDO;
 class Connect
 {
 	public function connect()
 	{
-		$this->host = "localhost";
-		$this->user = "root";
-		$this->pass = "";
-		$this->dbname = "social";
+		$host = "localhost";
+		$user = "root";
+		$pass = "";
+		$dbname = "social";
 		try {
-			$pdo = new PDO("mysql:host=$this->host;dbname=$this->dbname", $this->user, $this->pass);
+            $pdo = new PDO("mysql:host=$host;dbname=$dbname", "$user", "$pass");
 			$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		} catch (Exception $e) {
 			echo "Błąd z połączeniem się z bazą";

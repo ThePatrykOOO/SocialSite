@@ -1,10 +1,11 @@
 <?php
+namespace SignUp;
 include_once 'connect.php';
 include 'errors.php';
 /**
 * Rejestracja nowego użytkownika
 */
-class SignUp extends Connect
+class SignUp extends \Connect\Connect
 {
 	private $name = null;
 	private $surname = null;
@@ -50,7 +51,7 @@ class SignUp extends Connect
 			$_SESSION['errorRegister'] = ["Podałeś niepoprawną datę"];
 		}	    
 		$sql = "SELECT email FROM users WHERE email='$email'";
-		$question = Connect::connect()->query($sql);
+		$question = \Connect\Connect::connect()->query($sql);
 	    $count = $question->RowCount();
 	    if($count>0) {
 	      	$_SESSION['errorRegister'] = ["Email jest już zajęty!"];
@@ -68,21 +69,17 @@ class SignUp extends Connect
 		return $password_hash;
 	}
 	public function register($name=null, $surname=null, $birth=null, $email=null, $password=null)
-	{ 
-		$this->name = $name;
+	{
+//	    Może niedziałać
 		$this->checkName($name);
-		$this->surname = $surname;
 		$this->checkSurname($surname);
-		$this->birth = $birth;
 		$this->checkBirth($birth);
-		$this->email = $email;
 		$this->checkEmail($email);
-		$this->password = $password;
 		$password_hash = $this->checkPassword($password);
 		// Wszystko jest OK można rejestrować usera.
 		if (!isset($_SESSION['errorRegister']) || count($_SESSION['errorRegister']) == 0) {
-			$sql = "INSERT INTO users VALUES(NULL,'$this->name','$this->surname','$this->email','$password_hash','$this->birth',NULL,NULL,NULL,NULL,NULL,0)";
-			$question = $this->connect()->query($sql);
+			$sql = "INSERT INTO users VALUES(NULL,'$name','$surname','$email','$password_hash','$birth',NULL,NULL,NULL,NULL,NULL,0)";
+			$question = \Connect\Connect::connect()->query($sql);
 			if ($question) {
 				echo "YES";
 			} else {

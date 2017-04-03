@@ -1,18 +1,18 @@
 <?php
   include 'php/signup.php';
-  $signup = new SignUp;
-  include 'php/page.php';
-  $page = new Page;
+  include 'php/user.php';
+  use SignUp\SignUp as SignUp;
+  use User\User as user;
   if (isset($_POST['first'])) {
-    $signup->register($_POST['first'], $_POST['last'], $_POST['birth'], $_POST['email'], $_POST['password']);
+      SignUp::register($_POST['first'], $_POST['last'], $_POST['birth'], $_POST['email'], $_POST['password']);
   }
   if (isset($_POST['emailLogin'])) {
-    $page->login($_POST['emailLogin'], $_POST['passwordLogin']);
+      user::login($_POST['emailLogin'], $_POST['passwordLogin']);
   }
   $errors = new Errors;
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pl">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
