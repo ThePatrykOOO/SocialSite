@@ -2,14 +2,14 @@
   include 'php/signup.php';
   include 'php/user.php';
   use SignUp\SignUp as SignUp;
-  use User\User as user;
+  use User\User as User;
+  use Error\Error as Error;
   if (isset($_POST['first'])) {
       SignUp::register($_POST['first'], $_POST['last'], $_POST['birth'], $_POST['email'], $_POST['password']);
   }
   if (isset($_POST['emailLogin'])) {
-      user::login($_POST['emailLogin'], $_POST['passwordLogin']);
+      User::login($_POST['emailLogin'], $_POST['passwordLogin']);
   }
-  $errors = new Errors;
 ?>
 <!DOCTYPE html>
 <html lang="pl">
@@ -61,7 +61,7 @@
             <h1 class="cover-heading" id="login">Zaloguj Się</h1>
             <?php
               if (isset($_SESSION['errorLogin']) && count($_SESSION['errorLogin']) > 0) {
-                $errors->showErrorsLogin($_SESSION['errorLogin']);
+                  Error::showErrorsLogin($_SESSION['errorLogin']);
                 unset($_SESSION['errorLogin']);
               }
             ?>
@@ -87,7 +87,7 @@
             <h1 class="cover-heading" id="restiger">Zarejestruj Się</h1>
             <?php
               if (isset($_SESSION['errorRegister']) && count($_SESSION['errorRegister']) > 0) {
-                $errors->showErrorsRegister($_SESSION['errorRegister']);
+                  Error::showErrorsRegister($_SESSION['errorRegister']);
                 unset($_SESSION['errorRegister']);
               }
             ?>
@@ -124,7 +124,7 @@
 
           <div class="mastfoot">
             <div class="inner">
-              <p>Twórca <a href="http://getbootstrap.com">Patryk Filipiak</a> Daj Się Poznać 2017</p>
+              <p>Twórca <a href="http://patrykfilipiak.pl">Patryk Filipiak</a> Daj Się Poznać 2017</p>
             </div>
           </div>
         </div>

@@ -24,5 +24,6 @@ RewriteRule stworz-strone user/createSite.php
 RewriteRule zaproszenia user/newfriend.php
 RewriteRule zapisane user/saved.php
 RewriteRule ustawienia user/settings.php
+RewriteRule nowy-user user/newuser.php
 RewriteRule edytuj-profil user/profil-edit.php
 

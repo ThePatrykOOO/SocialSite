@@ -5,6 +5,8 @@ include 'errors.php';
 /**
 * Rejestracja nowego użytkownika
 */
+use PDO;
+if (!isset($_SESSION)) session_start();
 class SignUp extends \Connect\Connect
 {
 	private $name = null;
@@ -70,20 +72,24 @@ class SignUp extends \Connect\Connect
 	}
 	public function register($name=null, $surname=null, $birth=null, $email=null, $password=null)
 	{
-//	    Może niedziałać
-		$this->checkName($name);
-		$this->checkSurname($surname);
-		$this->checkBirth($birth);
-		$this->checkEmail($email);
-		$password_hash = $this->checkPassword($password);
+		\SignUp\SignUp::checkName($name);
+        \SignUp\SignUp::checkSurname($surname);
+        \SignUp\SignUp::checkBirth($birth);
+        \SignUp\SignUp::checkEmail($email);
+		$password_hash = \SignUp\SignUp::checkPassword($password);
 		// Wszystko jest OK można rejestrować usera.
 		if (!isset($_SESSION['errorRegister']) || count($_SESSION['errorRegister']) == 0) {
-			$sql = "INSERT INTO users VALUES(NULL,'$name','$surname','$email','$password_hash','$birth',NULL,NULL,NULL,NULL,NULL,0)";
-			$question = \Connect\Connect::connect()->query($sql);
+			$sql = "INSERT INTO users VALUES(NULL,:name,:surname,:email,:password_hash,:birth,NULL,NULL,NULL,NULL,NULL,0)";
+			$question = \Connect\Connect::connect()->prepare($sql);
+            $question->bindValue(':name', $name, PDO::PARAM_INT);
+            $question->bindValue(':surname', $surname, PDO::PARAM_INT);
+            $question->bindValue(':email', $email, PDO::PARAM_INT);
+            $question->bindValue(':password_hash', $password_hash, PDO::PARAM_INT);
+            $question->bindValue(':birth', $birth, PDO::PARAM_INT);
+            $question->execute();
 			if ($question) {
-				echo "YES";
-			} else {
-				echo "NO";
+				$_SESSION['newUser'] = true;
+				header("Location: user/nowy-user");
 			}
 
 		}

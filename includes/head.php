@@ -1,6 +1,4 @@
 <?php
-	require '../php/user.php';
-	use User\User;
 	\User\User::youlogged();
 ?>
 <!DOCTYPE html>

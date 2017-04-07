@@ -1,5 +1,15 @@
 <div class="jumbotron col-lg-6">
         <h2 class="center-text">Edytuj Profil</h2><br>
+        <?php
+        if (isset($_SESSION['errorUser']) && count($_SESSION['errorUser']) > 0) {
+           \Error\Error::showErrorsUser($_SESSION['errorUser']);
+            unset($_SESSION['errorUser']);
+        }
+        if (isset($_SESSION['success'])) {
+            \User\Success::successShow($_SESSION['success']);
+            unset($_SESSION['success']);
+        }
+        ?>
         <form method="post">
             <table class="edit-profil">
                 <tr>
@@ -7,7 +17,7 @@
                         Imię:
                     </td>
                     <td>
-                        <input type="text" class="form-control" disabled="disabled" value="IMIE">
+                        <input type="text" class="form-control" disabled="disabled" value="<?php echo $name ?>">
                     </td>
                 </tr>
                 <tr>
@@ -15,7 +25,7 @@
                         Nazwisko:
                     </td>
                     <td>
-                        <input type="text" class="form-control" disabled="disabled" value="NAZWISKO">
+                        <input type="text" class="form-control" disabled="disabled" value="<?php echo $surname ?>">
                     </td>
                 </tr>
                 <tr>
@@ -23,7 +33,7 @@
                         Email:
                     </td>
                     <td>
-                        <input type="email" class="form-control" disabled="disabled" value="EMAIL">
+                        <input type="email" class="form-control" disabled="disabled" value="<?php echo $email ?>">
                     </td>
                 </tr>
                 <tr>
@@ -31,7 +41,7 @@
                         Data Urodzenia:
                     </td>
                     <td>
-                        <input type="date" class="form-control" name="birth" value="2000-01-02">
+                        <input type="date" class="form-control" name="birth" value="<?php echo $birth ?>">
                     </td>
                 </tr>
                 <tr>
@@ -39,7 +49,7 @@
                         Miejsce Zamieszkania:
                     </td>
                     <td>
-                        <input type="text" class="form-control" name="home" value="HOME">
+                        <input type="text" class="form-control" name="home" value="<?php echo $home ?>">
                     </td>
                 </tr>
                 <tr>
@@ -47,7 +57,7 @@
                         Praca:
                     </td>
                     <td>
-                        <input type="text" class="form-control" name="work" value="WORK">
+                        <input type="text" class="form-control" name="work" value="<?php echo $work ?>">
                     </td>
                 </tr>
                 <tr>
@@ -55,7 +65,7 @@
                         Szkoła:
                     </td>
                     <td>
-                        <input type="text" class="form-control" name="school" value="SCHOOL">
+                        <input type="text" class="form-control" name="school" value="<?php echo $school ?>">
                     </td>
                 </tr>
                 <tr>
@@ -63,7 +73,7 @@
                         Telefon:
                     </td>
                     <td>
-                        <input type="tel" class="form-control" name="phone" value="3232">
+                        <input type="tel" class="form-control" name="phone" value="<?php echo $phone ?>">
                     </td>
                 </tr>
                 <tr>
@@ -71,7 +81,7 @@
                         O mnie:
                     </td>
                     <td>
-                        <textarea name="about" class="form-control">COŚ</textarea>
+                        <textarea name="about" class="form-control"><?php echo $about ?></textarea>
                     </td>
                 </tr>
                 <br>

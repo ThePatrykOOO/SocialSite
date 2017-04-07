@@ -1,5 +1,11 @@
 <div class="jumbotron col-lg-6">
     <h2 class="center-text">Ustawienia</h2><br>
+    <?php
+        if (isset($_SESSION['success'])) {
+            \User\Success::successShow($_SESSION['success']);
+            unset($_SESSION['success']);
+        }
+    ?>
     <form method="post">
         <table class="edit-profil">
             <tr>

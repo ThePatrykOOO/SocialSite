@@ -1,6 +1,12 @@
 <div class="jumbotron col-lg-6">
     <h2 class="center-text">Utwórz Stronę</h2>
-    <p>Tutaj możesz utworzyć swoją stronę.</p>
+    <p class="center-text">Tutaj możesz utworzyć swoją stronę.</p>
+    <?php
+        if (isset($_SESSION['errorUser']) && count($_SESSION['errorUser']) > 0) {
+            \Error\Error::showErrorsUser($_SESSION['errorUser']);
+            unset($_SESSION['errorUser']);
+        }
+    ?>
     <form method="post">
         <div class="form-group">
             <label>Nazwa Strony:</label>
@@ -15,12 +21,9 @@
             <select name="typeSite" class="form-control">
 <!--               Wypiszemy tutaj rekordy z bazy danych-->
                 <option value="null">---</option>
-                <option value="0">Firma</option>
-                <option value="1">Organizacja</option>
-                <option value="2">Marka</option>
-                <option value="3">Produkt</option>
-                <option value="4">Artysta</option>
-                <option value="5">Zespół</option>
+                <?php
+                    \User\Page::showTypeSite();
+                ?>
             </select>
         </div>
         <div class="form-group">
