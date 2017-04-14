@@ -1,15 +1,15 @@
 <?php
-  include 'php/signup.php';
-  include 'php/user.php';
-  use SignUp\SignUp as SignUp;
-  use User\User as User;
-  use Error\Error as Error;
-  if (isset($_POST['first'])) {
-      SignUp::register($_POST['first'], $_POST['last'], $_POST['birth'], $_POST['email'], $_POST['password']);
-  }
-  if (isset($_POST['emailLogin'])) {
-      User::login($_POST['emailLogin'], $_POST['passwordLogin']);
-  }
+    require 'vendor/autoload.php';
+    if (isset($_POST['first'])) {
+        SignUp\SignUp::register($_POST['first'], $_POST['last'], $_POST['birth'], $_POST['email'], $_POST['password']);
+    }
+    if(isset($_COOKIE['emailLogin']) && isset($_COOKIE['password'])) {
+        User\User::login($_COOKIE['emailLogin'], $_COOKIE['password']);
+    }
+    if (isset($_POST['emailLogin'])) {
+        User\User::login($_POST['emailLogin'], $_POST['passwordLogin'], $_POST['remember']);
+    }
+
 ?>
 <!DOCTYPE html>
 <html lang="pl">
@@ -61,7 +61,7 @@
             <h1 class="cover-heading" id="login">Zaloguj Się</h1>
             <?php
               if (isset($_SESSION['errorLogin']) && count($_SESSION['errorLogin']) > 0) {
-                  Error::showErrorsLogin($_SESSION['errorLogin']);
+                  Error\Error::showErrors($_SESSION['errorLogin']);
                 unset($_SESSION['errorLogin']);
               }
             ?>
@@ -76,7 +76,7 @@
               </div>
               <div class="checkbox">
                 <label>
-                  <input type="checkbox">Zapamiętaj mnie
+                  <input type="checkbox" name="remember">Zapamiętaj mnie
                 </label>
               </div>
               <button type="submit" class="btn btn-danger">Zaloguj Się</button>
@@ -87,7 +87,7 @@
             <h1 class="cover-heading" id="restiger">Zarejestruj Się</h1>
             <?php
               if (isset($_SESSION['errorRegister']) && count($_SESSION['errorRegister']) > 0) {
-                  Error::showErrorsRegister($_SESSION['errorRegister']);
+                  Error::showErrors($_SESSION['errorRegister']);
                 unset($_SESSION['errorRegister']);
               }
             ?>

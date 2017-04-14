@@ -1,7 +1,5 @@
 <?php
-/**
-* Połączenie się z bazą
-*/
+/** Połączenie się z bazą */
 namespace Connect;
 use PDO;
 class Connect

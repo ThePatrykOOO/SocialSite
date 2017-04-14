@@ -1,5 +1,5 @@
 <?php
-    include "../php/user.php";
+require '../vendor/autoload.php';
     if (isset($_POST['urlSaved'])) {
         \User\User::addSave($_POST['savedName'], $_POST['urlSaved']);
     }

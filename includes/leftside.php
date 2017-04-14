@@ -11,8 +11,8 @@
     </div>
   </div>
   <ul class="list-group">
-    <li class="list-group-item"><b>Moje Strony</b>
-    <li class="list-group-item"><b>Moje Grupy</b></li>
+    <li class="list-group-item"><a href="moje-strony">Moje Strony</a></li>
+    <li class="list-group-item"><a href="moje-grupy">Moje Grupy</a></li>
     <li class="list-group-item"><a href="zapisane">Zapisane</a></li>
     <li class="list-group-item"><i class="fa fa-gamepad"></i> Gry</li>
     <li class="list-group-item"><i class="fa fa-cogs"></i> <a href="ustawienia">Ustawienia</a></li>

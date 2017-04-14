@@ -1,11 +1,7 @@
 <?php
-/**
- * Błędy ze stron
- */
+/** Błędy ze stron */
 namespace Error;
 include 'success.php';
-use User\Success;
-use Error\Error;
 class Error
 {
 	protected function readError($error)
@@ -16,15 +12,7 @@ class Error
 		foreach ($error as $value) echo $value;
 		echo '</div></div>';
 	}
-	public function showErrorsRegister($error = null)
-	{
-        \Error\Error::readError($error);
-	}
-	public function showErrorsLogin($error = null)
-	{
-        \Error\Error::readError($error);
-	}
-    public function showErrorsUser($error = null)
+    public function showErrors($error = null)
     {
         \Error\Error::readError($error);
     }

@@ -1,7 +1,9 @@
 <div class="jumbotron col-lg-6">
-    <h2>Twój Profil
-        <a href="edytuj-profil" class="dropdown-toggle" title="Edytuj Profil"><i class="fa fa-cog"></i></a>
-    </h2>
+    <h2>Profil Użytkownika: <?php echo "$name $surname";?></h2>
+    <?php
+        if($_SESSION['iduser'] != $id)
+            \User\User::checkFriend($id);
+    ?>
     <table class="table table-bordered">
         <tr>
             <td><b>Imie:</b></td>

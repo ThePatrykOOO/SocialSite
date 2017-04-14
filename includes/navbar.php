@@ -9,7 +9,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="main">Social Page</a>
+        <a class="navbar-brand" href="main">Social Site</a>
       </div>
       <div id="navbar" class="collapse navbar-collapse">
         <ul class="nav navbar-nav">
@@ -22,7 +22,7 @@
           <li data-toggle="tooltip" title="Wiadomości">
             <a class="dropdown-toggle" data-toggle="dropdown"><b class="fa fa-commenting-o"></b></a>
             <ul class="dropdown-menu">
-              <h5><small>Wiadomości</small></h5>
+              <h5><small><a href="messages">Wiadomości</a></small></h5>
               <li class="messageTop">
                 <a href="#">Patryk Filipiak</a>
                 <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
@@ -35,11 +35,7 @@
             <a class="dropdown-toggle" data-toggle="dropdown"><b class="fa fa-user-plus"></b></a>
             <ul class="dropdown-menu">
               <h5><small><a href="zaproszenia">Zaproszenia</a></small></h5>
-              <li class="dropAdd">
-                <a href="#">Patryk Filipiak</a>
-                <button type="button" class="btn btn-success btn-xs"><i class="fa fa-check"></i></button>
-                <button type="button" class="btn btn-danger btn-xs"><i class="fa fa-close"></i></button>
-              </li>
+              <?php \User\User::yourRequestFriend(); ?>
             </ul>
           </li>
           <li class="dropdown" data-toggle="tooltip" title="Opcje">

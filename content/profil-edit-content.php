@@ -2,7 +2,7 @@
         <h2 class="center-text">Edytuj Profil</h2><br>
         <?php
         if (isset($_SESSION['errorUser']) && count($_SESSION['errorUser']) > 0) {
-           \Error\Error::showErrorsUser($_SESSION['errorUser']);
+           \Error\Error::showErrors($_SESSION['errorUser']);
             unset($_SESSION['errorUser']);
         }
         if (isset($_SESSION['success'])) {

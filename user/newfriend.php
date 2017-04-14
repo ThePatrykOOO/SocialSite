@@ -1,6 +1,7 @@
 <?php
-require '../php/user.php';
-
+require '../vendor/autoload.php';
+    if(isset($_POST['accept'])) \User\User::acceptFriend($_POST['accept']);
+    if(isset($_POST['delete'])) \User\User::ignoreFriend($_POST['delete']);
 ?>
 <?php include '../includes/head.php';?>
 <?php include '../includes/navbar.php';?>

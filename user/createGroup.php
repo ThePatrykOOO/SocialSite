@@ -1,5 +1,19 @@
 <?php
-    require '../php/user.php';
+    require '../vendor/autoload.php';
+
+    if (isset($_POST['nameGroup'])) {
+        if (isset($_POST['FriendGroup']))
+            $friend = $_POST['FriendGroup'];
+        else
+            $friend = null;
+
+        if (isset($_POST['statusGroup']))
+            $statusGroup = $_POST['statusGroup'];
+        else
+            $statusGroup = null;
+
+        \User\User::addGroup($_POST['nameGroup'], $statusGroup, $friend);
+    }
 ?>
 <?php include '../includes/head.php';?>
 <?php include '../includes/navbar.php';?>

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Czas generowania: 07 Kwi 2017, 18:49
+-- Czas generowania: 14 Kwi 2017, 13:37
 -- Wersja serwera: 10.1.16-MariaDB
 -- Wersja PHP: 7.0.9
 
@@ -23,6 +23,114 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Struktura tabeli dla tabeli `friendrequest`
+--
+
+CREATE TABLE `friendrequest` (
+  `id` int(11) NOT NULL,
+  `fromUser` int(11) NOT NULL,
+  `toUser` int(11) NOT NULL,
+  `status` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+
+--
+-- Zrzut danych tabeli `friendrequest`
+--
+
+INSERT INTO `friendrequest` (`id`, `fromUser`, `toUser`, `status`) VALUES
+(1, 2, 1, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `groups`
+--
+
+CREATE TABLE `groups` (
+  `id` int(11) NOT NULL,
+  `nameGroup` varchar(100) COLLATE utf8_polish_ci NOT NULL,
+  `admin` int(11) NOT NULL,
+  `status` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+
+--
+-- Zrzut danych tabeli `groups`
+--
+
+INSERT INTO `groups` (`id`, `nameGroup`, `admin`, `status`) VALUES
+(1, 'Kappa', 1, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `membersgroup`
+--
+
+CREATE TABLE `membersgroup` (
+  `id` int(11) NOT NULL,
+  `idgroup` int(11) NOT NULL,
+  `iduser` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+
+--
+-- Zrzut danych tabeli `membersgroup`
+--
+
+INSERT INTO `membersgroup` (`id`, `idgroup`, `iduser`) VALUES
+(1, 1, 2),
+(2, 1, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `messages`
+--
+
+CREATE TABLE `messages` (
+  `id` int(11) NOT NULL,
+  `fromUser` int(11) NOT NULL,
+  `toUser` int(11) NOT NULL,
+  `text` varchar(1000) COLLATE utf8_polish_ci NOT NULL,
+  `data` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+
+--
+-- Zrzut danych tabeli `messages`
+--
+
+INSERT INTO `messages` (`id`, `fromUser`, `toUser`, `text`, `data`) VALUES
+(1, 2, 1, 'Część', '2017-04-12 21:06:43'),
+(2, 2, 1, 'Jan Kowalski tutaj', '2017-04-12 21:12:45'),
+(3, 2, 1, 'Jan Kowalski tutaj', '2017-04-12 21:13:55'),
+(4, 1, 2, 'kappa', '2017-04-12 21:26:50'),
+(5, 1, 2, 'Siema\r\n', '2017-04-13 08:08:08'),
+(6, 1, 2, 'Test czy działa \r\n', '2017-04-13 10:13:51');
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `posts`
+--
+
+CREATE TABLE `posts` (
+  `id` int(11) NOT NULL,
+  `typeAutor` int(11) NOT NULL,
+  `idAutor` int(11) NOT NULL,
+  `text` varchar(3000) COLLATE utf8_polish_ci NOT NULL,
+  `data` datetime NOT NULL,
+  `status` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+
+--
+-- Zrzut danych tabeli `posts`
+--
+
+INSERT INTO `posts` (`id`, `typeAutor`, `idAutor`, `text`, `data`, `status`) VALUES
+(1, 1, 1, 'Pierwszy Post w Social Site', '2017-04-14 09:27:05', 1);
+
+-- --------------------------------------------------------
+
+--
 -- Struktura tabeli dla tabeli `saved`
 --
 
@@ -38,8 +146,7 @@ CREATE TABLE `saved` (
 --
 
 INSERT INTO `saved` (`idsave`, `name_save`, `url`, `iduser`) VALUES
-(1, 'Portfolio', 'http://patrykfilipiak.pl/', 2),
-(2, 'Fejs', 'https://www.facebook.com/', 1);
+(1, 'Portfolio', 'http://patrykfilipiak.pl/', 2);
 
 -- --------------------------------------------------------
 
@@ -55,6 +162,14 @@ CREATE TABLE `sites` (
   `admin` int(11) NOT NULL,
   `status` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+
+--
+-- Zrzut danych tabeli `sites`
+--
+
+INSERT INTO `sites` (`idsite`, `name`, `description`, `type`, `admin`, `status`) VALUES
+(1, 'Social Site', 'Fanpage tej strony. Witamy u nas :)', 1, 2, 1),
+(2, 'PHP Tutorials', 'Pokazuje tutaj tutoriale na temat języka PHP', 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -105,12 +220,42 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `surname`, `email`, `password`, `birth`, `home`, `work`, `school`, `phone`, `about`, `status`) VALUES
-(1, 'Patryk', 'Filipiak', 'thepatrykooo@gmail.com', '$2y$10$DT5USNr67/gHAGrxGQj8ueoXUl4QwsO1mX0pkgiTYYNrve7WMc45O', '2000-01-02', 'Explorer', 'Programista HTML', 'ILO ILO', '736657933', 'Jestem Patryk kappa Programista HTML Kappa', 0),
+(1, 'Patryk', 'Filipiak', 'thepatrykooo@gmail.com', '$2y$10$su3aFsr6aSeLFm54CLOfS.LGEy9JrgaLw4mlzNXmWDBXgpGpJwyWq', '2000-01-02', 'Explorer', 'Programista Brainfuck', 'ILO ILO', '73665', 'Jestem Patryk kappa Programista HTML Kappa', 0),
 (2, 'Jan', 'Kowalski', 'patrykowegry1@gmail.com', '$2y$10$JXxHaIaPHxItellEklmpFebmZ5zQaVPKQTgehzLmqQ3ZrCXQYj7xO', '1999-02-23', NULL, NULL, NULL, NULL, NULL, 0);
 
 --
 -- Indeksy dla zrzutów tabel
 --
+
+--
+-- Indexes for table `friendrequest`
+--
+ALTER TABLE `friendrequest`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `groups`
+--
+ALTER TABLE `groups`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `membersgroup`
+--
+ALTER TABLE `membersgroup`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `messages`
+--
+ALTER TABLE `messages`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `posts`
+--
+ALTER TABLE `posts`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `saved`
@@ -141,15 +286,40 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT dla tabeli `friendrequest`
+--
+ALTER TABLE `friendrequest`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT dla tabeli `groups`
+--
+ALTER TABLE `groups`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT dla tabeli `membersgroup`
+--
+ALTER TABLE `membersgroup`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT dla tabeli `messages`
+--
+ALTER TABLE `messages`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+--
+-- AUTO_INCREMENT dla tabeli `posts`
+--
+ALTER TABLE `posts`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
 -- AUTO_INCREMENT dla tabeli `saved`
 --
 ALTER TABLE `saved`
-  MODIFY `idsave` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `idsave` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT dla tabeli `sites`
 --
 ALTER TABLE `sites`
-  MODIFY `idsite` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idsite` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT dla tabeli `type_site`
 --

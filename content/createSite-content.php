@@ -3,9 +3,13 @@
     <p class="center-text">Tutaj możesz utworzyć swoją stronę.</p>
     <?php
         if (isset($_SESSION['errorUser']) && count($_SESSION['errorUser']) > 0) {
-            \Error\Error::showErrorsUser($_SESSION['errorUser']);
+            \Error\Error::showErrors($_SESSION['errorUser']);
             unset($_SESSION['errorUser']);
         }
+        if (isset($_SESSION['success'])) {
+        \User\Success::successShow($_SESSION['success']);
+        unset($_SESSION['success']);
+    }
     ?>
     <form method="post">
         <div class="form-group">

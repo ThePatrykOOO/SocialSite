@@ -5,6 +5,10 @@
             \User\Success::successShow($_SESSION['success']);
             unset($_SESSION['success']);
         }
+        if (isset($_SESSION['errorUser']) && count($_SESSION['errorUser']) > 0) {
+            \Error\Error::showErrors($_SESSION['errorUser']);
+            unset($_SESSION['errorUser']);
+        }
     ?>
     <form method="post" autocomplete="on">
         <div class="form-group">
