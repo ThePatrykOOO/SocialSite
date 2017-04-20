@@ -6,9 +6,9 @@ Deny from all
 
 RewriteEngine on
 
-ErrorDocument 404 http://localhost/social/404.html
-ErrorDocument 400 http://localhost/social/404.html
-ErrorDocument 403 http://localhost/social/404.html
+#ErrorDocument 404 http://localhost/social/404.html
+#ErrorDocument 400 http://localhost/social/404.html
+#ErrorDocument 403 http://localhost/social/404.html
 
 ErrorDocument 500 http://localhost/social/500.shtml
 ErrorDocument 502 http://localhost/social/500.shtml
@@ -28,8 +28,13 @@ RewriteRule zapisane user/saved.php
 RewriteRule ustawienia user/settings.php
 RewriteRule nowy-user user/newuser.php
 RewriteRule edytuj-profil user/profil-edit.php
+RewriteRule edytuj-strone user/site-edit.php
+RewriteRule edytuj-grupe user/group-edit.php
 RewriteRule messages user/messages.php
 RewriteRule moje-strony user/mysites.php
 RewriteRule moje-grupy user/mygroups.php
+RewriteRule czlonkowie user/members-group.php
+RewriteRule dodaj-uzytkownikow user/add-members-group.php
+RewriteRule post user/post.php
 
 

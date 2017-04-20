@@ -1,4 +1,4 @@
-<div class="jumbotron col-lg-6">
+<div class="jumbotron col-lg-6 col-md-6">
     <h2 class="center-text">Utwórz Grupę</h2>
     <p>Tutaj możesz utworzyć swoją grupę.</p>
     <?php
@@ -27,7 +27,6 @@
             <div class="alert alert-warning" style="overflow: scroll">
                 <?php \User\Page::showFriendGroup(); ?>
             </div>
-            <p>Przytrzymaj Ctrl lub Shift aby wybrać większą ilość osób.</p>
         </div>
         <div class="form-group">
             <input type="submit" class="btn btn-danger" value="Stwórz">

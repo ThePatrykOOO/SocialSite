@@ -11,6 +11,12 @@
     $admin = $result['admin'];
     $descrtiption = $result['description'];
     $type = $result['name_type'];
+
+//    if (isset($_POST['UnlikeSite'])) \User\User::unlikeSite($_POST['UnlikeSite']);
+//    if (isset($_POST['likeSite'])) \User\User::likeSite($_POST['likeSite']);
+
+    if (isset($_POST['postText'])) \User\User::addPost($typeAutor=2,$_POST['postText'],$id);
+
 ?>
 <?php include '../includes/head.php';?>
 <?php include '../includes/navbar.php';?>

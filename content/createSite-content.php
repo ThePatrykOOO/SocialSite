@@ -23,7 +23,6 @@
         <div class="form-group">
             <label>Rodzaj strony:</label>
             <select name="typeSite" class="form-control">
-<!--               Wypiszemy tutaj rekordy z bazy danych-->
                 <option value="null">---</option>
                 <?php
                     \User\Page::showTypeSite();

@@ -12,6 +12,12 @@
     $nameGroup = $result['nameGroup'];
     $status = $result['status'];
 
+    if (isset($_POST['postText'])) \User\User::addPost($typeAutor=3,$_POST['postText'],$id);
+    if(isset($_POST['like'])) \User\User::likePost($_POST['like']);
+    if(isset($_POST['alreadyUnlike'])) \User\User::alreadyUnlike($_POST['alreadyUnlike']);
+    if(isset($_POST['unlike'])) \User\User::unLikePost($_POST['unlike']);
+    if(isset($_POST['alreadyLike'])) \User\User::alreadyLike($_POST['alreadyLike']);
+
 ?>
 <?php include '../includes/head.php';?>
 <?php include '../includes/navbar.php';?>

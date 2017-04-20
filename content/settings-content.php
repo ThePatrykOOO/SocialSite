@@ -1,4 +1,4 @@
-<div class="jumbotron col-lg-6">
+<div class="jumbotron col-lg-6 col-md-6">
     <h2 class="center-text">Ustawienia</h2><br>
     <?php
         if (isset($_SESSION['success'])) {

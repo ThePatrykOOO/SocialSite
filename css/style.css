@@ -1,6 +1,7 @@
 body {
-  padding-top: 50px;
-  max-width: 1800px;
+	padding-top:50px;
+	max-width: 1800px;
+	margin: auto;
 }
 nav {
 	margin: auto;
@@ -42,6 +43,11 @@ h4 small {
 	font-size: 12px;
 }
 footer {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	padding: 1em;
 	text-align: center;
 }
 .edit-profil {
@@ -60,4 +66,92 @@ footer {
 .messenger {
 	height: 400px;
 	overflow-y: scroll;
+}
+.optionsPost form{
+	display: inline-block;
+}
+.post {
+	padding-bottom: 20px;
+	/*border-bottom: 1px solid #9d9d9d;*/
+}
+.post:last-child {
+	padding: 20px;
+	border-bottom: 0;
+}
+.comment-text {
+	font-size: 1em;
+}
+.inline-block {
+	display: inline-block;
+}
+
+
+.panelIcon {
+	content: 'f086';
+	position: fixed;
+	bottom: 20px;
+	left: 20px;
+	z-index: 5;
+	visibility: hidden;
+}
+.chatIcon {
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+	z-index: 5;
+	visibility: hidden;
+}
+@media (max-width: 992px) {
+	.chatIcon, .panelIcon {
+		visibility: visible;
+	}
+	#leftside {
+		visibility: hidden;
+		position: fixed;
+		background-color: #0f0f0f;
+		height: 100%;
+		z-index: 5;
+		overflow: auto;
+	}
+	#leftside h4, span{
+		color: #ffffff;
+	}
+	#leftside ul .list-group-item {
+		background-color: #0f0f0f;
+	}
+	#leftside .dropdownBlank {
+		background-color: #0f0f0f;
+	}
+	#leftside > .fa {
+		color: #ffffff;
+	}
+
+	#leftside > a {
+		color: #ffffff;
+	}
+
+	.chatSide {
+		visibility: hidden;
+		position: fixed;
+		background-color: #0f0f0f;
+		height: 100%;
+		z-index: 5;
+		overflow: auto;
+	}
+	.chatSide h4, span{
+		color: #ffffff;
+	}
+	.chatSide ul .list-group-item {
+		background-color: #0f0f0f;
+	}
+	.chatSide .dropdownBlank {
+		background-color: #0f0f0f;
+	}
+	.chatSide > .fa {
+		color: #ffffff;
+	}
+
+	.chatSide > a {
+		color: #ffffff;
+	}
 }

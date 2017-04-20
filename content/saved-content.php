@@ -1,4 +1,4 @@
-<div class="jumbotron col-lg-6">
+<div class="jumbotron col-lg-6 col-md-6">
     <h3 class="center-text">Zapisane</h3>
     <?php
         if (isset($_SESSION['success'])) {

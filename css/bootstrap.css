@@ -93,7 +93,7 @@ figure {
   margin: 1em 40px;
 }
 hr {
-  height: 0;
+  height: 1;
   -webkit-box-sizing: content-box;
      -moz-box-sizing: content-box;
           box-sizing: content-box;
@@ -1150,7 +1150,7 @@ img {
 hr {
   margin-top: 20px;
   margin-bottom: 20px;
-  border: 0;
+  border: 1px solid black;
   border-top: 1px solid #eee;
 }
 .sr-only {
@@ -3063,26 +3063,18 @@ fieldset[disabled] a.btn {
 }
 .btn-default {
   color: #333;
-  background-color: #fff;
-  border-color: #ccc;
 }
 .btn-default:focus,
 .btn-default.focus {
   color: #333;
-  background-color: #e6e6e6;
-  border-color: #8c8c8c;
 }
 .btn-default:hover {
   color: #333;
-  background-color: #e6e6e6;
-  border-color: #adadad;
 }
 .btn-default:active,
 .btn-default.active,
 .open > .dropdown-toggle.btn-default {
   color: #333;
-  background-color: #e6e6e6;
-  border-color: #adadad;
 }
 .btn-default:active:hover,
 .btn-default.active:hover,
@@ -3094,8 +3086,6 @@ fieldset[disabled] a.btn {
 .btn-default.active.focus,
 .open > .dropdown-toggle.btn-default.focus {
   color: #333;
-  background-color: #d4d4d4;
-  border-color: #8c8c8c;
 }
 .btn-default:active,
 .btn-default.active,

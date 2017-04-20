@@ -1,5 +1,5 @@
 <body>
-<div class="container">
+<div class="container main-content">
   <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
       <div class="navbar-header">

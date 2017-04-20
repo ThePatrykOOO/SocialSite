@@ -122,14 +122,15 @@
             <p class="lead">Strona jest realizowana w ramach konkursu Daj Się Poznać 2017</p>
           </div>
 
-          <div class="mastfoot">
+          <div class="mastfoot center-block">
             <div class="inner">
-              <p>Twórca <a href="http://patrykfilipiak.pl">Patryk Filipiak</a> Daj Się Poznać 2017</p>
+              <p class="text-center">Twórca <a href="http://patrykfilipiak.pl">Patryk Filipiak</a> Daj Się Poznać 2017</p>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <?php \User\Page::checkInfoCookie(); ?>
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
