@@ -5,7 +5,7 @@
       "Connect\\":"php",
       "Error\\":"php",
       "Page\\":"php",
-      "SignUp\\":"php",
+      "Signup\\":"php",
       "Success\\":"php"
     }
   }

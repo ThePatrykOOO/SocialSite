@@ -1,5 +1,5 @@
 <?php
-require '../vendor/autoload.php';
+require_once '../vendor/load-class.php';
 use User\User as User;
 use Error\Error as Error;
 if (isset($_POST['emailLogin'])) {

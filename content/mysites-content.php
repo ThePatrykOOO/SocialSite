@@ -1,5 +1,15 @@
 <div class="jumbotron col-lg-6 col-md-6">
     <h3 class="center-text">Moje Strony</h3>
+    <?php
+    if (isset($_SESSION['errorUser']) && count($_SESSION['errorUser']) > 0) {
+        \Error\Error::showErrors($_SESSION['errorUser']);
+        unset($_SESSION['errorUser']);
+    }
+    if (isset($_SESSION['success'])) {
+        \User\Success::successShow($_SESSION['success']);
+        unset($_SESSION['success']);
+    }
+    ?>
     <table class="table table-striped">
         <thead>
         <tr>

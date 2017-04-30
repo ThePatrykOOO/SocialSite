@@ -1,7 +1,6 @@
 <?php
 /** Błędy ze stron */
 namespace Error;
-include 'success.php';
 class Error
 {
 	protected function readError($error)
@@ -14,6 +13,6 @@ class Error
 	}
     public function showErrors($error = null)
     {
-        \Error\Error::readError($error);
+        Error::readError($error);
     }
 }

@@ -5,7 +5,7 @@
           <label for="exampleTextarea">Dodaj Post</label>
               <?php
               if (isset($_SESSION['errorUser']) && count($_SESSION['errorUser']) > 0) {
-                  \Error\Error::showErrors($_SESSION['errorUser']);
+                 $error->showErrors($_SESSION['errorUser']);
                   unset($_SESSION['errorUser']);
               }
               ?>
@@ -15,7 +15,7 @@
   </div>
   <div id="posts">
       <?php
-      \User\User::showMainPost();
+      $user->showMainPost();
       ?>
   </div>
 </div><!-- Posts -->

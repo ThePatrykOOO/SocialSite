@@ -1,5 +1,5 @@
 <?php
-    require '../vendor/autoload.php';
+require_once '../vendor/load-class.php';
     if(isset($_POST['birth'])) {
         \User\User::editProfil($_POST['birth'],$_POST['home'],$_POST['work'],$_POST['school'],$_POST['phone'],$_POST['about']);
     }

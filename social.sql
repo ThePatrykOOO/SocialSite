@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Czas generowania: 21 Kwi 2017, 18:41
+-- Czas generowania: 30 Kwi 2017, 15:06
 -- Wersja serwera: 10.1.16-MariaDB
 -- Wersja PHP: 7.0.9
 
@@ -38,8 +38,7 @@ CREATE TABLE `commentpost` (
 --
 
 INSERT INTO `commentpost` (`id`, `idpost`, `idAutor`, `comment`) VALUES
-(1, 6, 1, 'No witam witam'),
-(2, 3, 1, 'Siema');
+(1, 6, 1, 'No witam witam');
 
 -- --------------------------------------------------------
 
@@ -59,7 +58,7 @@ CREATE TABLE `friendrequest` (
 --
 
 INSERT INTO `friendrequest` (`id`, `fromUser`, `toUser`, `status`) VALUES
-(9, 2, 1, 1);
+(11, 2, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -79,8 +78,8 @@ CREATE TABLE `groups` (
 --
 
 INSERT INTO `groups` (`id`, `nameGroup`, `admin`, `status`) VALUES
-(1, 'Grupa fanów Kappy', 1, 2),
-(4, 'Grupa Fanów HTMLa', 1, 1);
+(1, 'Grupa Fanów HTMLa', 1, 1),
+(4, 'Kappa', 2, 1);
 
 -- --------------------------------------------------------
 
@@ -102,10 +101,9 @@ CREATE TABLE `likepost` (
 INSERT INTO `likepost` (`id`, `idpost`, `idperson`, `status`) VALUES
 (24, 38, 2, 1),
 (36, 35, 1, 1),
-(92, 4, 1, 0),
 (93, 39, 1, 1),
-(94, 1, 1, 0),
-(95, 3, 1, 1);
+(95, 1, 1, 1),
+(96, 7, 2, 0);
 
 -- --------------------------------------------------------
 
@@ -118,6 +116,14 @@ CREATE TABLE `likesite` (
   `idsite` int(11) NOT NULL,
   `iduser` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+
+--
+-- Zrzut danych tabeli `likesite`
+--
+
+INSERT INTO `likesite` (`id`, `idsite`, `iduser`) VALUES
+(1, 2, 1),
+(2, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -136,10 +142,10 @@ CREATE TABLE `membersgroup` (
 --
 
 INSERT INTO `membersgroup` (`id`, `idgroup`, `iduser`) VALUES
-(2, 1, 1),
-(9, 1, 2),
-(12, 4, 1),
-(13, 4, 2);
+(1, 1, 1),
+(2, 1, 2),
+(7, 4, 2),
+(8, 4, 1);
 
 -- --------------------------------------------------------
 
@@ -164,7 +170,9 @@ INSERT INTO `messages` (`id`, `fromUser`, `toUser`, `text`, `data`) VALUES
 (2, 2, 1, 'tak trochę był', '2017-04-18 18:19:09'),
 (3, 2, 1, 'siema', '2017-04-19 20:44:06'),
 (4, 1, 2, 'no witam', '2017-04-19 20:44:19'),
-(5, 1, 2, 'witam', '2017-04-20 17:40:37');
+(5, 1, 2, 'witam', '2017-04-20 17:40:37'),
+(6, 1, 2, 'admin ', '2017-04-24 09:05:55'),
+(7, 1, 2, 'elo siema', '2017-04-24 09:06:06');
 
 -- --------------------------------------------------------
 
@@ -188,9 +196,12 @@ CREATE TABLE `posts` (
 
 INSERT INTO `posts` (`id`, `typeAutor`, `idtype`, `idAutor`, `text`, `data`, `status`) VALUES
 (1, 1, NULL, 1, 'Pierwszy Post w Social Site', '2017-04-14 09:27:05', 1),
-(2, 3, 1, 1, 'Elo siema grupa', '2017-04-14 22:10:13', 1),
-(3, 3, 1, 1, 'Drugi post na grupie Kappa', '2017-04-14 22:22:09', 1),
-(4, 2, 2, 1, 'PHP Tutorials echo;', '2017-04-14 22:32:43', 1);
+(5, 1, NULL, 1, 'Patrykowy post', '2017-04-22 18:11:49', 1),
+(6, 1, NULL, 1, 'Patrykowy Post', '2017-04-22 18:11:58', 1),
+(7, 3, 1, 1, '1 Post', '2017-04-22 21:01:59', 1),
+(9, 1, NULL, 2, 'Witam, to mój post', '2017-04-22 21:12:12', 1),
+(10, 2, 1, 2, 'witajcie here', '2017-04-22 22:20:47', 1),
+(12, 3, 4, 2, 'Siema', '2017-04-23 21:20:53', 1);
 
 -- --------------------------------------------------------
 
@@ -233,7 +244,7 @@ CREATE TABLE `sites` (
 
 INSERT INTO `sites` (`idsite`, `name`, `description`, `type`, `admin`, `status`) VALUES
 (1, 'Social Site', 'Fanpage tej strony. Witamy u nas :)', 1, 2, 1),
-(2, 'PHP SQL Tutorials', 'Pokazuje tutaj tutoriale na temat języka PHP i SQL', 2, 1, 1);
+(2, 'PHP Tutorials', 'Tutoriale z PHP', 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -371,12 +382,12 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT dla tabeli `commentpost`
 --
 ALTER TABLE `commentpost`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT dla tabeli `friendrequest`
 --
 ALTER TABLE `friendrequest`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 --
 -- AUTO_INCREMENT dla tabeli `groups`
 --
@@ -386,27 +397,27 @@ ALTER TABLE `groups`
 -- AUTO_INCREMENT dla tabeli `likepost`
 --
 ALTER TABLE `likepost`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=96;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
 --
 -- AUTO_INCREMENT dla tabeli `likesite`
 --
 ALTER TABLE `likesite`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT dla tabeli `membersgroup`
 --
 ALTER TABLE `membersgroup`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT dla tabeli `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT dla tabeli `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 --
 -- AUTO_INCREMENT dla tabeli `saved`
 --

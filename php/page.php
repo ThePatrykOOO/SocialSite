@@ -1,5 +1,5 @@
 <?php
-namespace User;
+namespace Page;
 use PDO;
 class Page extends \Connect\Connect
 {
@@ -41,7 +41,7 @@ class Page extends \Connect\Connect
         }
 
     }
-    public function addJS()
+    public static function addJS()
     {
         if ($_SERVER['SCRIPT_NAME'] == "/social/user/messages.php") {
             echo '<script src="../js/message.js"></script>';

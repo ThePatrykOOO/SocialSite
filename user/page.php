@@ -1,5 +1,5 @@
 <?php
-    require '../vendor/autoload.php';
+require_once '../vendor/load-class.php';
     $id = isset($_GET['id']) ? strval($_GET['id']): 0;
     if ($id == 0 ) header("Location: main");
     $sql = "SELECT s.name, s.description, s.admin, t.name_type FROM sites as s, type_site as t WHERE idsite=:id AND s.idsite=t.id";

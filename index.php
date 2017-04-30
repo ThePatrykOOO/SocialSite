@@ -1,13 +1,15 @@
 <?php
-    require 'vendor/autoload.php';
+    require_once 'vendor/load-class-welcome.php';
+
     if (isset($_POST['first'])) {
-        SignUp\SignUp::register($_POST['first'], $_POST['last'], $_POST['birth'], $_POST['email'], $_POST['password']);
+        $sign->register($_POST['first'], $_POST['last'], $_POST['birth'], $_POST['email'], $_POST['password']);
     }
     if(isset($_COOKIE['emailLogin']) && isset($_COOKIE['password'])) {
-        User\User::login($_COOKIE['emailLogin'], $_COOKIE['password']);
+        $user->login($_COOKIE['emailLogin'], $_COOKIE['password']);
     }
     if (isset($_POST['emailLogin'])) {
-        User\User::login($_POST['emailLogin'], $_POST['passwordLogin'], $_POST['remember']);
+        if (isset($_POST['remember'])) $remember = $_POST['remember']; else $remember = null;
+        $user->login($_POST['emailLogin'], $_POST['passwordLogin'], $remember);
     }
 
 ?>
@@ -61,7 +63,7 @@
             <h1 class="cover-heading" id="login">Zaloguj Się</h1>
             <?php
               if (isset($_SESSION['errorLogin']) && count($_SESSION['errorLogin']) > 0) {
-                  Error\Error::showErrors($_SESSION['errorLogin']);
+                  $error->showErrors($_SESSION['errorLogin']);
                 unset($_SESSION['errorLogin']);
               }
             ?>
@@ -86,8 +88,8 @@
           <div class="inner cover">
             <h1 class="cover-heading" id="restiger">Zarejestruj Się</h1>
             <?php
-              if (isset($_SESSION['errorRegister']) && count($_SESSION['errorRegister']) > 0) {
-                  Error::showErrors($_SESSION['errorRegister']);
+              if (isset($_SESSION['errorRegister'])) {
+                  $error->showErrors($_SESSION['errorRegister']);
                 unset($_SESSION['errorRegister']);
               }
             ?>
@@ -130,7 +132,7 @@
         </div>
       </div>
     </div>
-    <?php \User\Page::checkInfoCookie(); ?>
+    <?php $page->checkInfoCookie(); ?>
 
     <!-- Bootstrap core JavaScript
     ================================================== -->

@@ -1,5 +1,6 @@
 <?php
-    require '../vendor/autoload.php';
+require_once '../vendor/load-class.php';
+    if (isset($_POST['deleteSites'])) \User\User::deleteSite($_POST['deleteSites']);
 ?>
 <?php include '../includes/head.php';?>
 <?php include '../includes/navbar.php';?>

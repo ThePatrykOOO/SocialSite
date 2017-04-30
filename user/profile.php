@@ -1,5 +1,5 @@
 <?php
-require '../vendor/autoload.php';
+require_once '../vendor/load-class.php';
     $id = isset($_GET['id']) ? strval($_GET['id']): 0;
     if ($id == 0 ) header("Location: moj-profil");
     $question = \Connect\Connect::connect()->prepare("SELECT * FROM users WHERE id=:id");

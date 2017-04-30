@@ -1,19 +1,9 @@
 <?php
-namespace SignUp;
-include_once 'connect.php';
-include 'errors.php';
-/**
-* Rejestracja nowego użytkownika
-*/
+namespace Sign;
 use PDO;
 if (!isset($_SESSION)) session_start();
-class SignUp extends \Connect\Connect
+class SignUp
 {
-	private $name = null;
-	private $surname = null;
-	private $birth = null;
-	private $email = null;
-	private $password = null;
 	public function checkName($name)
 	{
 		$check = '/[a-ząęółśżźćń]+$/';
@@ -72,11 +62,11 @@ class SignUp extends \Connect\Connect
 	}
 	public function register($name=null, $surname=null, $birth=null, $email=null, $password=null)
 	{
-		\SignUp\SignUp::checkName($name);
-        \SignUp\SignUp::checkSurname($surname);
-        \SignUp\SignUp::checkBirth($birth);
-        \SignUp\SignUp::checkEmail($email);
-		$password_hash = \SignUp\SignUp::checkPassword($password);
+		\Sign\SignUp::checkName($name);
+        \Sign\SignUp::checkSurname($surname);
+        \Sign\SignUp::checkBirth($birth);
+        \Sign\SignUp::checkEmail($email);
+		$password_hash = \Sign\SignUp::checkPassword($password);
 		// Wszystko jest OK można rejestrować usera.
 		if (!isset($_SESSION['errorRegister']) || count($_SESSION['errorRegister']) == 0) {
 			$sql = "INSERT INTO users VALUES(NULL,:name,:surname,:email,:password_hash,:birth,NULL,NULL,NULL,NULL,NULL,0)";

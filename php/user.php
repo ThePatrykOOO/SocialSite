@@ -1,21 +1,21 @@
 <?php
 namespace User;
-
-include_once 'connect.php';
-include_once 'signup.php';
+if (isset($_SESSION['logged'])) {
+    require_once '../vendor/autoload.php';
+    require_once '../vendor/load-class.php';
+}
+use \Sign\SignUp as SignUp;
 use PDO;
-use SignUp\SignUp as SignUp;
 class User extends \Connect\Connect
 {
-    public function youlogged()
+    public static function youlogged()
     {
         if (!isset($_SESSION['logged']) || $_SESSION['logged'] == false) {
             header('Location: ../welcome');
             exit();
         }
     }
-
-    public function login($emailLogin = null, $password = null, $remember = null)
+    public static function login($emailLogin = null, $password = null, $remember = null)
     {
         $emailLogin = htmlentities($emailLogin, ENT_QUOTES, "UTF-8");
         $sql = "SELECT * FROM users WHERE email='$emailLogin'";
@@ -40,47 +40,41 @@ class User extends \Connect\Connect
             $_SESSION['errorLogin'] = ["Nie znaleziono użytkownika o takim loginie i haśle!"];
         }
     }
-
-    private function checkHome($home)
+    private static function checkHome($home)
     {
         $home = htmlentities($home, ENT_QUOTES, "UTF-8");
         if (strlen($home) > 100) {
             $_SESSION['errorUser'] = ["Miejsce zamieszkania ma za dużo znaków"];
         }
     }
-
-    private function checkWork($work)
+    private static function checkWork($work)
     {
         $work = htmlentities($work, ENT_QUOTES, "UTF-8");
         if (strlen($work) > 100) {
             $_SESSION['errorUser'] = ["Twoja praca ma za dużo znaków"];
         }
     }
-
-    private function checkSchool($school)
+    private static function checkSchool($school)
     {
         $school = htmlentities($school, ENT_QUOTES, "UTF-8");
         if (strlen($school) > 100) {
             $_SESSION['errorUser'] = ["Nazwa szkoły ma za dużo znaków"];
         }
     }
-
-    private function checkPhone($phone)
+    private static function checkPhone($phone)
     {
 //        if(strlen($phone)!=9 || !is_int($phone)) {
 //            $_SESSION['errorUser'] = "Wpisz poprawny numer telefonu!";
 //        }
     }
-
-    private function checkAbout($about)
+    private static function checkAbout($about)
     {
         $about = htmlentities($about, ENT_QUOTES, "UTF-8");
         if (strlen($about) <= 10) {
             $_SESSION['errorUser'] = ["Opis ma za mało znaków min. 10"];
         }
     }
-
-    public function editProfil($birth = null, $home = null, $worked = null, $school = null, $phone = null, $about = null)
+    public static function editProfil($birth = null, $home = null, $worked = null, $school = null, $phone = null, $about = null)
     {
         SignUp::checkbirth($birth);
         \User\User::checkHome($home);
@@ -107,7 +101,7 @@ class User extends \Connect\Connect
 
     } //niedokonczone
 
-    public function changePass($passOld = null, $pass1 = null, $pass2 = null)
+    public static function changePass($passOld = null, $pass1 = null, $pass2 = null)
     {
         $question = \Connect\Connect::connect()->prepare("SELECT password FROM users WHERE id=:id");
         $question->bindValue(':id', $_SESSION['iduser'], PDO::PARAM_INT);
@@ -127,28 +121,26 @@ class User extends \Connect\Connect
         $_SESSION['success'] = "Hasło zostało zmienione";
     }
 
-    private function checkName($name)
+    private static function checkName($name)
     {
         $name = htmlentities($name, ENT_QUOTES, "UTF-8");
         if (strlen($name) > 50) {
             $_SESSION['errorUser'] = ["Nazwa ma za dużo znaków"];
         }
     }
-
-    private function checkDescribe($describe)
+    private static function checkDescribe($describe)
     {
         $describe = htmlentities($describe, ENT_QUOTES, "UTF-8");
         if (strlen($describe) > 300) {
             $_SESSION['errorUser'] = ["Opis strony ma za dużo znaków"];
         }
     }
-
-    private function checkType($type)
+    private static function checkType($type)
     {
-        $question = \Connect\Connect::connect()->prepare("SELECT id FROM type_site WHERE id=:id");
+        $sql = "SELECT id FROM type_site WHERE id=:id";
+        $question = \Connect\Connect::connect()->prepare($sql);
         $question->bindValue(':id', $type, PDO::PARAM_INT);
         $question->execute();
-        $result = $question->fetch();
         if ($question->rowCount() == 0) {
             $_SESSION['errorUser'] = ["Nie ma takiej Kategorii"];
         }
@@ -156,8 +148,7 @@ class User extends \Connect\Connect
             $_SESSION['errorUser'] = ["Wybierz kategorię!"];
         }
     }
-
-    public function newSite($name = null, $describe = null, $type = null)
+    public static function newSite($name = null, $describe = null, $type = null)
     {
         \User\User::checkName($name);
         \User\User::checkDescribe($describe);
@@ -172,12 +163,12 @@ class User extends \Connect\Connect
             $question->execute();
             if ($question) {
                 $_SESSION['success'] = "Utworzyłeś właśnie nową stronę, przejdź do zakładki moje strony po lewej stronie";
+                header("Location: moje-strony");
             }
         }
 
     }
-
-    public function showMySite()
+    public static function showMySite()
     {
         $sql = "SELECT name, idsite FROM sites WHERE admin=:id";
         $question = \Connect\Connect::connect()->prepare($sql);
@@ -191,7 +182,9 @@ class User extends \Connect\Connect
                 <a href="page?id=' . $id . '">' . $value['name'] . '</a>
             </td>
             <td>
-                <i class="fa fa-trash-o" title="Usuń Stronę"></i>
+                <form method="post">
+                    <button type="submit" name="deleteSites" class="btn btn-danger btn-xs" value="'.$id.'"><i class="fa fa-trash-o" title="Usuń Stronę"></i></button>
+                </form>
             </td>
             <td>
                 <a href="edytuj-strone?id=' . $id . '"><i class="fa fa-cog" title="Edytuj Stronę"></i></a>
@@ -199,8 +192,7 @@ class User extends \Connect\Connect
         </tr>';
         }
     }
-
-    public function editSite($name = null, $describe = null, $type = null, $id = null)
+    public static function editSite($name = null, $describe = null, $type = null, $id = null)
     {
         \User\User::checkName($name);
         \User\User::checkDescribe($describe);
@@ -218,7 +210,7 @@ class User extends \Connect\Connect
             }
         }
     }
-    public function likeSiteStatus($id = null)
+    public static function likeSiteStatus($id = null)
     {
         $sql = "SELECT id FROM likesite WHERE iduser=:idUser AND idsite=:id";
         $question = \Connect\Connect::connect()->prepare($sql);
@@ -242,7 +234,7 @@ class User extends \Connect\Connect
 
 
     }
-    public function likeSite($id)
+    public static function likeSite($id)
     {
         $sql = "INSERT INTO likesite VALUES(NULL,:id,:idUser)";
         $question = \Connect\Connect::connect()->prepare($sql);
@@ -250,7 +242,7 @@ class User extends \Connect\Connect
         $question->bindValue(':idUser', $_SESSION['iduser'], PDO::PARAM_STR);
         $question->execute();
     }
-    public function unlikeSite($id)
+    public static function unlikeSite($id)
     {
         $sql = "DELETE FROM likesite WHERE iduser=:idUser AND idsite=:id";
         $question = \Connect\Connect::connect()->prepare($sql);
@@ -258,21 +250,66 @@ class User extends \Connect\Connect
         $question->bindValue(':idUser', $_SESSION['iduser'], PDO::PARAM_STR);
         $question->execute();
     }
+    public static function deleteSite($id)
+    {
+        $sql = "SELECT admin FROM sites WHERE idsite=:id";
+        $question = \Connect\Connect::connect()->prepare($sql);
+        $question->bindValue(':id', $id, PDO::PARAM_STR);
+        $question->execute();
+        $result = $question->fetch();
+        if ($_SESSION['iduser'] == $result['admin']) {
+            //        usuwanie postów, komentarzy, lajków
+            $sql = "SELECT id FROM posts WHERE idtype=:id";
+            $question = \Connect\Connect::connect()->prepare($sql);
+            $question->bindValue(':id', $id, PDO::PARAM_STR);
+            $question->execute();
+            foreach ($question as $value) {
+                $id = $value['id'];
+//        usuwanie komentarzy
+                $sql = "DELETE FROM commentpost WHERE idpost=:id";
+                $question = \Connect\Connect::connect()->prepare($sql);
+                $question->bindValue(':id', $id, PDO::PARAM_STR);
+                $question->execute();
+//        usuwanie lajków postów
+                $sql = "DELETE FROM likepost WHERE idpost=:id";
+                $question = \Connect\Connect::connect()->prepare($sql);
+                $question->bindValue(':id', $id, PDO::PARAM_STR);
+                $question->execute();
+//        usuwanie  postów
+                $sql = "DELETE FROM posts WHERE id=:id";
+                $question = \Connect\Connect::connect()->prepare($sql);
+                $question->bindValue(':id', $id, PDO::PARAM_STR);
+                $question->execute();
+            }
 
-    private function checkNameSaved($name)
+//        usuwanie strony
+            $sql = "DELETE FROM sites WHERE idsite=:id";
+            $question = \Connect\Connect::connect()->prepare($sql);
+            $question->bindValue(':id', $id, PDO::PARAM_STR);
+            $question->execute();
+
+            $_SESSION['success'] = "Usunięto stronę";
+        } else {
+            $_SESSION['errorUser'] = ["Nie kombinuj tutaj, strona jest zabezpieczona przed takimi atakami :)"];
+        }
+
+
+    }
+
+    private static function checkNameSaved($name)
     {
         $name = htmlentities($name, ENT_QUOTES, "UTF-8");
         if (strlen($name) > 50) {
             $_SESSION['errorUser'] = ["Nazwa jest zbyt długa!"];
         }
     }
-    private function checkUrl($url)
+    private static function checkUrl($url)
     {
         if (filter_var($url, FILTER_VALIDATE_URL) === false) {
             $_SESSION['errorUser'] = ["Niepoprawny adres URL strony!"];
         }
     }
-    public function addSave($name = null, $url = null)
+    public static function addSave($name = null, $url = null)
     {
         \User\User::checkNameSaved($name);
         \User\User::checkUrl($url);
@@ -288,7 +325,7 @@ class User extends \Connect\Connect
             }
         }
     }
-    public function showSaved()
+    public static function showSaved()
     {
         $sql = "SELECT * FROM saved WHERE iduser=:id";
         $question = \Connect\Connect::connect()->prepare($sql);
@@ -306,14 +343,16 @@ class User extends \Connect\Connect
                 <a href="' . $url . '" target="_blank"><i class="fa fa-eye" title="Zobacz"></i></a> 
             </td>
             <td>
-                <a href="zapisane?del=' . $id . '"><i class="fa fa-trash-o" title="Usuń"></i></a>
+                <form method="post">
+                    <button type="submit" class="btn btn-danger btn-xs" name="delete" value="'.$id.'"><i class="fa fa-trash-o" title="Usuń"></i></button>
+                </form>
             </td>
         </tr>';
         }
 
 
     }
-    public function deleteSaved($idsave)
+    public static function deleteSaved($idsave)
     {
         $sql = "SELECT idsave FROM saved WHERE iduser=:id AND idsave=:idsave";
         $question = \Connect\Connect::connect()->prepare($sql);
@@ -327,11 +366,13 @@ class User extends \Connect\Connect
             $question->bindValue(':idsave', $idsave, PDO::PARAM_STR);
             $question->execute();
             if ($question) $_SESSION['success'] = "Usunąłeś zapisaną stronę";
+        } else {
+            $_SESSION['errorUser'] = ["Nie kombinuj tutaj, strona jest zabezpieczona przed takimi atakami :)"];
         }
     }
 
 
-    public function searchCheckFriend($idFriend)
+    public static function searchCheckFriend($idFriend)
     {
         $sql = "SELECT id FROM friendrequest WHERE ((fromUser=:id AND toUser=:idFriend) OR (fromUser=:idFriend AND toUser=:id)) AND status=1";
         $question = \Connect\Connect::connect()->prepare($sql);
@@ -374,8 +415,7 @@ class User extends \Connect\Connect
             }
         }
     }
-
-    public function showSearchFriend()
+    public static function showSearchFriend()
     {
         $sql = "SELECT id FROM users WHERE id!=:id";
         $question = \Connect\Connect::connect()->prepare($sql);
@@ -386,7 +426,7 @@ class User extends \Connect\Connect
             \User\User::searchCheckFriend($id);
         }
     }
-    public function checkFriend($idFriend)
+    public static function checkFriend($idFriend)
     {
         $sql = "SELECT id FROM friendrequest WHERE ((fromUser=:id AND toUser=:idFriend) OR (fromUser=:idFriend AND toUser=:id)) AND status=1";
         $question = \Connect\Connect::connect()->prepare($sql);
@@ -429,7 +469,7 @@ class User extends \Connect\Connect
             }
         }
     }
-    public function sendFriend($idfriend)
+    public static function sendFriend($idfriend)
     {
         $sql = "INSERT INTO friendrequest VALUES(NULL,:id, :idFriend, 0)";
         $question = \Connect\Connect::connect()->prepare($sql);
@@ -437,7 +477,7 @@ class User extends \Connect\Connect
         $question->bindValue(':idFriend', $idfriend, PDO::PARAM_STR);
         $question->execute();
     }
-    public function acceptFriend($idfriend)
+    public static function acceptFriend($idfriend)
     {
         $sql = "UPDATE friendrequest SET status=1 WHERE fromUser=:idFriend AND toUser=:id";
         $question = \Connect\Connect::connect()->prepare($sql);
@@ -445,7 +485,7 @@ class User extends \Connect\Connect
         $question->bindValue(':idFriend', $idfriend, PDO::PARAM_STR);
         $question->execute();
     }
-    public function deleteFriend($idfriend)
+    public static function deleteFriend($idfriend)
     {
         $sql = "DELETE FROM friendrequest WHERE (fromUser=:idFriend AND toUser=:id) OR (fromUser=:id AND toUser=:idFriend)";
         $question = \Connect\Connect::connect()->prepare($sql);
@@ -453,7 +493,7 @@ class User extends \Connect\Connect
         $question->bindValue(':idFriend', $idfriend, PDO::PARAM_STR);
         $question->execute();
     }
-    public function ignoreFriend($idfriend)
+    public static function ignoreFriend($idfriend)
     {
         $sql = "DELETE FROM friendrequest WHERE fromUser=:idFriend AND toUser=:id";
         $question = \Connect\Connect::connect()->prepare($sql);
@@ -461,7 +501,7 @@ class User extends \Connect\Connect
         $question->bindValue(':idFriend', $idfriend, PDO::PARAM_STR);
         $question->execute();
     }
-    public function cancelFriend($idfriend)
+    public static function cancelFriend($idfriend)
     {
         $sql = "DELETE FROM friendrequest WHERE fromUser=:id AND toUser=:idFriend";
         $question = \Connect\Connect::connect()->prepare($sql);
@@ -470,7 +510,7 @@ class User extends \Connect\Connect
         $question->execute();
     }
 
-    public function yourRequestFriend()
+    public static function yourRequestFriend()
     {
         $sql = "SELECT u.id, u.name, u.surname FROM friendrequest as f, users as u WHERE f.toUser=:id AND f.status=0 AND u.id=f.fromUser";
         $question = \Connect\Connect::connect()->prepare($sql);
@@ -489,7 +529,7 @@ class User extends \Connect\Connect
             </tr>';
         }
     }
-    public function chatright()
+    public static function chatright()
     {
         $sql = "SELECT u.id, u.name, u.surname FROM friendrequest as f, users as u WHERE (f.fromUser=:id OR f.toUser=:id) AND u.id!=:id AND f.status=1";
         $question = \Connect\Connect::connect()->prepare($sql);
@@ -501,7 +541,7 @@ class User extends \Connect\Connect
             echo '<li class="list-group-item"><a href="messages?id=' . $id . '">' . $fullname . '</a> </li>';
         }
     }
-    public function sendMessage($message, $idToSent)
+    public static function sendMessage($message, $idToSent)
     {
 
         $message = htmlentities($message, ENT_QUOTES, "UTF-8");
@@ -520,7 +560,7 @@ class User extends \Connect\Connect
             $question->execute();
         }
     }
-    public function showMessages($idToSent)
+    public static function showMessages($idToSent)
     {
         $sql = "SELECT m.fromUser, m.toUser, m.text FROM messages as m, users as u WHERE ((m.toUser=:id AND m.fromUser=:idToSent) OR (m.toUser=:idToSent AND m.fromUser=:id)) AND u.id=(m.fromUser OR m.toUser)";
         $question = \Connect\Connect::connect()->prepare($sql);
@@ -544,7 +584,7 @@ class User extends \Connect\Connect
         echo '<div id="scrollDown"></div>';
 
     }
-    public function showLastMessage()
+    public static function showLastMessage()
     {
 //        mają być wyświetlone ostatnie wiadomości usera do ludzi
         $sql = "SELECT u.id, u.name, u.surname FROM friendrequest as f, users as u WHERE (f.fromUser=:id OR f.toUser=:id) AND u.id!=:id AND f.status=1";
@@ -564,7 +604,7 @@ class User extends \Connect\Connect
         }
     } //niedokończone
 
-    private function checkNameGroup($name)
+    private static function checkNameGroup($name)
     {
         $name = htmlentities($name, ENT_QUOTES, "UTF-8");
         if (strlen($name) > 300) {
@@ -574,7 +614,7 @@ class User extends \Connect\Connect
             $_SESSION['errorUser'] = ["Nazwa strony jest za krótka"];
         }
     }
-    private function addMemberGroup($friends, $id)
+    private static function addMemberGroup($friends, $id)
     {
 //        Dodanie administatora strony
         $sql = "INSERT INTO membersgroup VALUES(NULL,:id,:admin)";
@@ -591,7 +631,7 @@ class User extends \Connect\Connect
             $question->execute();
         }
     }
-    private function checkStatus($status)
+    private static function checkStatus($status)
     {
         if ($status == 'Publiczna') $check = 1;
         elseif ($status == 'Niepubliczna') $check = 2;
@@ -599,7 +639,7 @@ class User extends \Connect\Connect
         else $_SESSION['errorUser'] = ["Zaznacz poprawnie status grupy"];
         return $check;
     }
-    public function addGroup($name = null, $status = null, $friends = null)
+    public static function addGroup($name = null, $status = null, $friends = null)
     {
         \User\User::checkNameGroup($name);
         if (isset($status))
@@ -621,9 +661,10 @@ class User extends \Connect\Connect
             $result = $question->fetch();
             \User\User::addMemberGroup($friends, $result['id']);
             $_SESSION['success'] = "Grupa została utworzona. Przejdź do zakładki moje grupy, aby przejść dalej :)";
+            header("Location: moje-grupy");
         }
-    } //niedokończone
-    public function editGroup($name = null, $status = null, $id = null)
+    }
+    public static function editGroup($name = null, $status = null, $id = null)
     {
         \User\User::checkNameGroup($name);
         if ($status != null)
@@ -640,7 +681,7 @@ class User extends \Connect\Connect
             $_SESSION['success'] = "Grupa została edytowana";
         }
     }
-    public function showMyGroup()
+    public static function showMyGroup()
     {
         $sql = "SELECT nameGroup, id FROM groups WHERE admin=:id";
         $question = \Connect\Connect::connect()->prepare($sql);
@@ -654,7 +695,9 @@ class User extends \Connect\Connect
                 <a href="grupa?id=' . $id . '">' . $value['nameGroup'] . '</a>
             </td>
             <td>
-                <i class="fa fa-trash-o" title="Usuń Stronę"></i>
+                <form method="post">
+                    <button type="submit" name="deleteGroup" class="btn btn-danger btn-xs" value="'.$id.'"><i class="fa fa-trash-o" title="Usuń Stronę"></i></button>
+                </form>
             </td>
             <td>               
                 <a href="edytuj-grupe?id=' . $id . '"><i class="fa fa-cog" title="Edytuj Grupę"></i></a>
@@ -662,7 +705,7 @@ class User extends \Connect\Connect
         </tr>';
         }
     }
-    public function showStatusGroup($status)
+    public static function showStatusGroup($status)
     {
         if ($status == '1') $check = "Publiczna";
         elseif ($status == '2') $check = "Niepubliczna";
@@ -670,7 +713,7 @@ class User extends \Connect\Connect
         else $check = "Błąd";
         return $check;
     }
-    public function showCountMembersGroup($id)
+    public static function showCountMembersGroup($id)
     {
         $question = \Connect\Connect::connect()->prepare("SELECT id FROM membersgroup WHERE idgroup=:id");
         $question->bindValue(':id', $id, PDO::PARAM_STR);
@@ -678,10 +721,10 @@ class User extends \Connect\Connect
         $count = $question->rowCount();
         echo '<a href="czlonkowie?id=' . $id . '">' . $count . ' Członków</a>';
     }
-    public function showMembersGroup($id)
+    public static function showMembersGroup($id)
     {
         $sql = "SELECT u.id, u.name, u.surname FROM membersgroup as m, users as u WHERE u.id=m.iduser AND m.idgroup=:id";
-        $question = \Connect\Connect::connect()->prepare($sql);
+        $question = \Connect\Connect::connect()->query($sql);
         $question->bindValue(':id', $id, PDO::PARAM_STR);
         $question->execute();
         foreach ($question as $value) {
@@ -697,10 +740,10 @@ class User extends \Connect\Connect
 
 
     }
-    public function showDeleteMembersGroup($idUser, $id)
+    public static function showDeleteMembersGroup($idUser, $id)
     {
-        $sql = "SELECT u.id FROM membersgroup as m, users as u, groups as g WHERE u.id=m.iduser=g.admin AND m.idgroup=:id AND m.iduser!=g.admin AND m.iduser=:idUser";
-        $question = \Connect\Connect::connect()->prepare($sql);
+        $sql = "SELECT u.id FROM membersgroup as m, users as u, groups as g WHERE u.id=m.iduser=g.admin AND m.idgroup=:id AND m.iduser=g.admin AND m.iduser=:idUser";
+        $question = \Connect\Connect::connect()->query($sql);
         $question->bindValue(':id', $id, PDO::PARAM_STR);
         $question->bindValue(':idUser', $idUser, PDO::PARAM_STR);
         $question->execute();
@@ -712,7 +755,7 @@ class User extends \Connect\Connect
                 </form>';
         }
     }
-    public function deleteMemberGroup($idUser, $id)
+    public static function deleteMemberGroup($idUser, $id)
     {
         $sql = "DELETE FROM membersgroup WHERE idgroup=:id AND iduser=:idUser";
         $question = \Connect\Connect::connect()->prepare($sql);
@@ -723,7 +766,7 @@ class User extends \Connect\Connect
             $_SESSION['success'] = "Usunięcie użytkownika z grupy ... Zakończyło się pomyślnie :)";
         }
     }
-    public function addUserGroup($friends,$id)
+    public static function addUserGroup($friends,$id)
     {
         //funkcja do dodawania członków gdy grupa jest już stworzona
         foreach ($friends as $value) {
@@ -734,9 +777,58 @@ class User extends \Connect\Connect
             $question->execute();
         }
     }
+    public static function deleteGroup($id)
+    {
+        $sql = "SELECT admin FROM groups WHERE id=:id";
+        $question = \Connect\Connect::connect()->prepare($sql);
+        $question->bindValue(':id', $id, PDO::PARAM_STR);
+        $question->execute();
+        $result = $question->fetch();
+        if ($_SESSION['iduser'] == $result['admin']) {
+            //        usuwanie postów, komentarzy, lajków
+            $sql = "SELECT id FROM posts WHERE idtype=:id";
+            $question = \Connect\Connect::connect()->prepare($sql);
+            $question->bindValue(':id', $id, PDO::PARAM_STR);
+            $question->execute();
+            foreach ($question as $value) {
+                $id = $value['id'];
+//        usuwanie komentarzy
+                $sql = "DELETE FROM commentpost WHERE idpost=:id";
+                $question = \Connect\Connect::connect()->prepare($sql);
+                $question->bindValue(':id', $id, PDO::PARAM_STR);
+                $question->execute();
+//        usuwanie lajków postów
+                $sql = "DELETE FROM likepost WHERE idpost=:id";
+                $question = \Connect\Connect::connect()->prepare($sql);
+                $question->bindValue(':id', $id, PDO::PARAM_STR);
+                $question->execute();
+//        usuwanie  postów
+                $sql = "DELETE FROM posts WHERE id=:id";
+                $question = \Connect\Connect::connect()->prepare($sql);
+                $question->bindValue(':id', $id, PDO::PARAM_STR);
+                $question->execute();
+            }
+
+//        usuwanie userów
+            $sql = "DELETE FROM membersgroup WHERE idgroup=:id";
+            $question = \Connect\Connect::connect()->prepare($sql);
+            $question->bindValue(':id', $id, PDO::PARAM_STR);
+            $question->execute();
+//        ususuwanie grupy
+            $sql = "DELETE FROM groups WHERE id=:id";
+            $question = \Connect\Connect::connect()->prepare($sql);
+            $question->bindValue(':id', $id, PDO::PARAM_STR);
+            $question->execute();
+
+            $_SESSION['success'] = "Usunięto grupę";
+        } else {
+            $_SESSION['errorUser'] = ["Nie kombinuj tutaj, strona jest zabezpieczona przed takimi atakami :)"];
+        }
 
 
-    private function checkTextPost($text)
+    }
+
+    private static function checkTextPost($text)
     {
         $tmptext = htmlentities($text, ENT_QUOTES, "UTF-8");
         $text = nl2br($tmptext);
@@ -747,7 +839,7 @@ class User extends \Connect\Connect
             $_SESSION['errorUser'] = ["Post musi mieć co najmniej 5 znaków"];
         }
     }
-    public function addPost($typeAutor = null, $text = null, $idtype = null)
+    public static function addPost($typeAutor = null, $text = null, $idtype = null)
     {
         \User\User::checkTextPost($text);
         if (!isset($_SESSION['errorUser']) || count($_SESSION['errorUser']) == 0) {
@@ -761,7 +853,7 @@ class User extends \Connect\Connect
             $question->execute();
         }
     }
-    private function countLikePost($idPost, $status)
+    private static function countLikePost($idPost, $status)
     {
         $sql = "SELECT id FROM likepost WHERE idpost=:idpost AND status=:status";
         $question = \Connect\Connect::connect()->prepare($sql);
@@ -771,7 +863,7 @@ class User extends \Connect\Connect
         $count = $question->rowCount();
         return $count;
     }
-    private function postIslike($fullname,$data,$text,$idPost)
+    private static function postIslike($fullname,$data,$text,$idPost)
     {
         $count = \User\User::countLikePost($idPost,1);
         echo '<div class="col-lg-12 post">
@@ -780,7 +872,7 @@ class User extends \Connect\Connect
             <div class="optionsPost">
                 <button type="submit" value="'.$idPost.'" name="alreadyUnlike" class="btn btn-default btn-xs alreadyUnlike"><i class="fa fa-thumbs-o-up"></i>Lubię <span class="badge">'.$count.'</span></button>';
     }
-    private function postIsUnlike($fullname,$data,$text,$idPost)
+    private static function postIsUnlike($fullname,$data,$text,$idPost)
     {
         $count = \User\User::countLikePost($idPost,0);
         echo '<div class="col-lg-12 post">
@@ -789,7 +881,7 @@ class User extends \Connect\Connect
             <div class="optionsPost">
                 <button type="submit" value="'.$idPost.'" class="btn btn-default btn-xs alreadyLike"><i class="fa fa-thumbs-o-down"></i>Nie lubię <span class="badge">'.$count.'</span></button>';
     }
-    private function postDefault($fullname,$data,$text,$idPost)
+    private static function postDefault($fullname,$data,$text,$idPost)
     {
         $countLike = \User\User::countLikePost($idPost,1);
         $countUnlike = \User\User::countLikePost($idPost,0);
@@ -801,7 +893,7 @@ class User extends \Connect\Connect
                 <button type="button" value="'.$idPost.'" name="unlike" class="btn btn-danger btn-xs unLikePost"><i class="fa fa-thumbs-o-down"></i>Nie lubię <span class="badge">'.$countUnlike.'</span></button>';
 
     }
-    public function likePost($idPost = null)
+    public static function likePost($idPost = null)
     {
         $sql = "SELECT id FROM likepost WHERE idpost=:idpost AND idperson=:id";
         $question = \Connect\Connect::connect()->prepare($sql);
@@ -817,7 +909,7 @@ class User extends \Connect\Connect
             $question->execute();
         }
     }
-    public function alreadyUnlike($idPost = null)
+    public static function alreadyUnlike($idPost = null)
     {
         $sql = "SELECT id FROM likepost WHERE idpost=:idpost AND idperson=:id AND status=1";
         $question = \Connect\Connect::connect()->prepare($sql);
@@ -833,7 +925,7 @@ class User extends \Connect\Connect
             $question->execute();
         }
     }
-    public function unLikePost($idPost = null)
+    public static function unLikePost($idPost = null)
     {
         $sql = "SELECT id FROM likepost WHERE idpost=:idpost AND idperson=:id";
         $question = \Connect\Connect::connect()->prepare($sql);
@@ -849,7 +941,7 @@ class User extends \Connect\Connect
             $question->execute();
         }
     }
-    public function alreadyLike($idPost = null)
+    public static function alreadyLike($idPost = null)
     {
         $sql = "SELECT id FROM likepost WHERE idpost=:idpost AND idperson=:id AND status=0";
         $question = \Connect\Connect::connect()->prepare($sql);
@@ -866,7 +958,7 @@ class User extends \Connect\Connect
         }
     }
 
-    private function echoPost($question)
+    private static function echoPost($question)
     {
         foreach ($question as $value) {
             $idPost = $value['idPost'];
@@ -924,13 +1016,54 @@ class User extends \Connect\Connect
               </div>';
         }
     }
-    public function showMainPost()
+    public static function showMainPost()
     {
-        $sql = "SELECT u.id as idUser, u.name, u.surname, p.id as idPost, p.text, p.data,p.typeAutor, p.idtype FROM posts as p, users as u, sites as s WHERE u.id=p.idAutor=s.admin ORDER BY p.id DESC";
-        $question = \Connect\Connect::connect()->query($sql);
-        \User\User::echoPost($question);
+        $idPost = array();
+//        moje posty
+        $sql = "SELECT id FROM posts WHERE idAutor=:id AND typeAutor=1";
+        $question = \Connect\Connect::connect()->prepare($sql);
+        $question->bindValue(':id', $_SESSION['iduser'], PDO::PARAM_STR);
+        $question->execute();
+        foreach ($question as $value) {
+            array_push($idPost,$value['id']);
+        }
+//        posty znajomych
+        $sql = "SELECT p.id FROM posts as p, friendrequest as f, users as u WHERE u.id=p.idAutor AND p.typeAutor=1 AND (f.fromUser=:id OR f.toUser=:id) AND typeAutor=1 AND p.idAutor!=:id AND f.status=1";
+        $question = \Connect\Connect::connect()->prepare($sql);
+        $question->bindValue(':id', $_SESSION['iduser'], PDO::PARAM_STR);
+        $question->execute();
+        foreach ($question as $value) {
+            array_push($idPost,$value['id']);
+        }
+//        posty polubionych stron
+        $sql = "SELECT p.id FROM posts as p, sites as s, likesite as l WHERE p.idtype=s.idsite=l.idsite AND p.idAutor=l.iduser AND p.typeAutor=2 AND l.iduser=:id";
+        $question = \Connect\Connect::connect()->prepare($sql);
+        $question->bindValue(':id', $_SESSION['iduser'], PDO::PARAM_STR);
+        $question->execute();
+        foreach ($question as $value) {
+            array_push($idPost,$value['id']);
+        }
+//        posty od grup
+        $sql = "SELECT p.id FROM posts as p, membersgroup as m, groups as g WHERE p.idtype=g.id=m.idgroup AND p.idAutor=m.iduser AND p.typeAutor=3";
+        $question = \Connect\Connect::connect()->prepare($sql);
+        $question->bindValue(':id', $_SESSION['iduser'], PDO::PARAM_STR);
+        $question->execute();
+        foreach ($question as $value) {
+            array_push($idPost,$value['id']);
+        }
+
+
+
+        rsort($idPost);
+        for ($i = 0; $i < count($idPost); $i++) {
+            $value = intval($idPost[$i]);
+            $sql = "SELECT u.id as idUser, u.name,s.name as nameSite, u.surname, p.id as idPost, p.text, p.data,p.typeAutor, p.idtype FROM posts as p, users as u, sites as s WHERE p.id='".$value."' AND u.id=p.idAutor=s.admin";
+            $question = \Connect\Connect::connect()->query($sql);
+            \User\User::echoPost($question);
+        }
+
     }
-    public function showGroupPost($id)
+    public static function showGroupPost($id)
     {
         $sql = "SELECT u.id as idUser, u.name, u.surname, p.id as idPost, p.text, p.data, p.idtype FROM posts as p, users as u WHERE u.id=p.idAutor AND (p.typeAutor=3 AND p.idtype=:id) ORDER BY p.id DESC";
         $question = \Connect\Connect::connect()->prepare($sql);
@@ -938,7 +1071,7 @@ class User extends \Connect\Connect
         $question->execute();
         \User\User::echoPost($question);
     }
-    public function showPagePost($id)
+    public static function showPagePost($id)
     {
         $sql = "SELECT u.id as idUser, s.name as nameSite, p.id as idPost, p.text, p.data, p.typeAutor,p.idtype FROM posts as p, users as u, sites as s WHERE u.id=p.idAutor=s.admin AND (p.typeAutor=2 AND p.idtype=:id) ORDER BY p.id DESC";
         $question = \Connect\Connect::connect()->prepare($sql);
@@ -946,7 +1079,7 @@ class User extends \Connect\Connect
         $question->execute();
         \User\User::echoPost($question);
     }
-    public function showMyPost()
+    public static function showMyPost()
     {
         $sql = "SELECT u.id as idUser, u.name, s.name as nameSite, u.surname, p.id as idPost, p.text, p.data,p.typeAutor,p.idtype FROM posts as p, users as u, sites as s WHERE u.id=p.idAutor=s.admin AND p.idAutor=:id ORDER BY p.id DESC";
         $question = \Connect\Connect::connect()->prepare($sql);
@@ -954,7 +1087,7 @@ class User extends \Connect\Connect
         $question->execute();
         \User\User::echoPost($question);
     }
-    public function showProfilePost($id)
+    public static function showProfilePost($id)
     {
         $sql = "SELECT u.id as idUser, u.name, u.surname, p.id as idPost, p.text, p.data,p.idtype FROM posts as p, users as u WHERE u.id=p.idAutor AND p.idAutor=:id AND p.typeAutor=1 ORDER BY p.id DESC";
         $question = \Connect\Connect::connect()->prepare($sql);
@@ -962,7 +1095,7 @@ class User extends \Connect\Connect
         $question->execute();
         \User\User::echoPost($question);
     }
-    public function showPost($id)
+    public static function showPost($id)
     {
         $sql = "SELECT u.id as idUser, u.name, u.surname, p.id as idPost, p.text, p.data,p.idtype FROM posts as p, users as u WHERE u.id=p.idAutor AND p.id=:id";
         $question = \Connect\Connect::connect()->prepare($sql);
@@ -971,7 +1104,7 @@ class User extends \Connect\Connect
         \User\User::echoPost($question);
     }
 
-    private function checkComment($comment)
+    private static function checkComment($comment)
     {
         $tmpcomment = htmlentities($comment, ENT_QUOTES, "UTF-8");
         $comment = nl2br($tmpcomment);
@@ -982,7 +1115,7 @@ class User extends \Connect\Connect
             $_SESSION['errorUser'] = ["Komentarz jest za krótki"];
         }
     }
-    public function addComment ($comment,$id)
+    public static function addComment ($comment,$id)
     {
         \User\User::checkComment($comment);
         if (!isset($_SESSION['errorUser']) || count($_SESSION['errorUser']) == 0) {
@@ -995,7 +1128,7 @@ class User extends \Connect\Connect
         }
 
     }
-    public function showComment($id)
+    public static function showComment($id)
     {
         $sql = "SELECT u.id, u.name, u.surname, c.comment FROM commentpost as c, users as u WHERE u.id=c.idAutor AND c.idpost=:id";
         $question = \Connect\Connect::connect()->prepare($sql);

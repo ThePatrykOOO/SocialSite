@@ -1,5 +1,5 @@
 <?php
-require '../vendor/autoload.php';
+require_once '../vendor/load-class.php';
 
     $sql = "SELECT * FROM users WHERE id=:id";
     $question = \Connect\Connect::connect()->prepare($sql);

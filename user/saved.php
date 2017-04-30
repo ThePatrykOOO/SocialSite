@@ -1,13 +1,7 @@
 <?php
-require '../vendor/autoload.php';
-    if (isset($_POST['urlSaved'])) {
-        \User\User::addSave($_POST['savedName'], $_POST['urlSaved']);
-    }
-    if (isset($_GET['del'])) {
-        $id = isset($_GET['del']) ? intval($_GET['del']) : 0;
-        if ($id != 0)
-            \User\User::deleteSaved($id);
-    }
+require_once '../vendor/load-class.php';
+    if (isset($_POST['urlSaved'])) \User\User::addSave($_POST['savedName'], $_POST['urlSaved']);
+    if (isset($_POST['delete'])) \User\User::deleteSaved($_POST['delete']);
 
 
 ?>

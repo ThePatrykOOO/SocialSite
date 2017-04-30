@@ -1,7 +1,6 @@
 <?php
 namespace User;
 
-use User\Success as Success;
 class Success
 {
     protected function readSuccess($success)
@@ -14,6 +13,6 @@ class Success
     }
     public function successShow($success = null)
     {
-        \User\Success::readSuccess($success);
+        Success::readSuccess($success);
     }
 }

@@ -1,5 +1,5 @@
 <?php
-require '../vendor/autoload.php';
+require_once '../vendor/load-class.php';
 //if(isset($_POST['like'])) \User\User::likePost($_POST['like']);
 //if(isset($_POST['alreadyUnlike'])) \User\User::alreadyUnlike($_POST['alreadyUnlike']);
 //if(isset($_POST['unlike'])) \User\User::unLikePost($_POST['unlike']);

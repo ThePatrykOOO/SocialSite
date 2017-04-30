@@ -15,7 +15,7 @@
                     }
                     </script>';
         }
-        \User\Page::addJS();
+        \Page\Page::addJS();
     ?>
 </body>
 </html>

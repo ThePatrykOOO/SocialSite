@@ -1,5 +1,5 @@
 <?php
-    require '../vendor/autoload.php';
+require_once '../vendor/load-class.php';
 
     if (isset($_POST['nameGroup'])) {
         if (isset($_POST['FriendGroup']))

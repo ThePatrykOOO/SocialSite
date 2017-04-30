@@ -1,5 +1,5 @@
 <?php
-	\User\User::youlogged();
+	$user->youlogged();
     if(isset($_POST['accept'])) \User\User::acceptFriend($_POST['accept']);
     if(isset($_POST['delete'])) \User\User::ignoreFriend($_POST['delete']);
 ?>

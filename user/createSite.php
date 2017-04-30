@@ -1,5 +1,5 @@
 <?php
-    require '../vendor/autoload.php';
+require_once '../vendor/load-class.php';
     use User\Page;
     if (isset($_POST['postText'])) \User\User::addPost($typeAutor=3,$_POST['postText'],$id);
     if (isset($_POST['nameSite']))

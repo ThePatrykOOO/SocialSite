@@ -1,5 +1,5 @@
 <?php
-    require '../vendor/autoload.php';
+require_once '../vendor/load-class.php';
     $id = isset($_GET['id']) ? strval($_GET['id']): 0;
     if (isset($_POST['FriendGroup'])) \User\User::addUserGroup($_POST['FriendGroup'],$id);
 ?>

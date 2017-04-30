@@ -1,5 +1,5 @@
 <?php
-    require '../vendor/autoload.php';
+require_once '../vendor/load-class.php';
     $id = isset($_GET['id']) ? strval($_GET['id']): 0;
     if(isset($_POST['name'])) {
         \User\User::editsite($_POST['name'],$_POST['description'],$_POST['typeSite'],$id);
