@@ -36,5 +36,6 @@ RewriteRule moje-grupy user/mygroups.php
 RewriteRule czlonkowie user/members-group.php
 RewriteRule dodaj-uzytkownikow user/add-members-group.php
 RewriteRule post user/post.php
+RewriteRule nie-znaleziono user/notfound.php
 
 

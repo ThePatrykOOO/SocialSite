@@ -4,7 +4,6 @@
         if (isset($_SESSION['success'])) {
             \User\Success::successShow($_SESSION['success']);
             unset($_SESSION['success']);
-            echo "CYKA";
         }
     ?>
     <form method="post">
@@ -108,53 +107,15 @@
     </form>
     <h3 class="center-text">Moje strony</h3>
     <table class="edit-profil">
-        <tr>
-            <td>
-                Nazwa strony:
-            </td>
-            <td>
-                <i class="fa fa-trash-o" title="Usuń Stronę"></i>
-            </td>
-            <td>
-                <i class="fa fa-cog" title="Edytuj Stronę"></i>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Nazwa strony:
-            </td>
-            <td>
-                <i class="fa fa-trash-o" title="Usuń Stronę"></i>
-            </td>
-            <td>
-                <i class="fa fa-cog" title="Edytuj Stronę"></i>
-            </td>
-        </tr>
+        <?php \User\User::showMySite();?>
     </table>
     <h3 class="center-text">Moje Grupy</h3>
     <table class="edit-profil">
-        <tr>
-            <td>
-                Nazwa Grupy:
-            </td>
-            <td>
-                <i class="fa fa-trash-o" title="Usuń Grupę"></i>
-            </td>
-            <td>
-                <i class="fa fa-cog" title="Edytuj Grupę"></i>
-            </td>
-        </tr>
+        <?php \User\User::showMyGroup();?>
     </table>
     <h3 class="center-text">Grupy do których należę</h3>
     <table class="edit-profil">
-        <tr>
-            <td>
-                Nazwa Grupy:
-            </td>
-            <td>
-                <i class="fa fa-times-circle" title="Wyjdź"></i>
-            </td>
-        </tr>
+        <?php \User\User::GroupsBelong(); ?>
     </table>
 
 </div>

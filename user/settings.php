@@ -21,6 +21,8 @@ require_once '../vendor/load-class.php';
     $phone = $result['phone'];
     $about = $result['about'];
 
+    if(isset($_POST['outGroup'])) \User\User::outGroup($_POST['outGroup']);
+
 ?>
 <?php include '../includes/head.php';?>
 <?php include '../includes/navbar.php';?>

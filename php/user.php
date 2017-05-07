@@ -4,6 +4,7 @@ if (isset($_SESSION['logged'])) {
     require_once '../vendor/autoload.php';
     require_once '../vendor/load-class.php';
 }
+session_start();
 use \Sign\SignUp as SignUp;
 use PDO;
 class User extends \Connect\Connect
@@ -63,9 +64,9 @@ class User extends \Connect\Connect
     }
     private static function checkPhone($phone)
     {
-//        if(strlen($phone)!=9 || !is_int($phone)) {
-//            $_SESSION['errorUser'] = "Wpisz poprawny numer telefonu!";
-//        }
+        if(!preg_match("/^[0-9]{9}$/", $phone)) {
+            $_SESSION['errorUser'] = ["Wpisz poprawny numer telefonu!"];
+        }
     }
     private static function checkAbout($about)
     {
@@ -178,15 +179,15 @@ class User extends \Connect\Connect
         foreach ($question as $value) {
             $id = $value['idsite'];
             echo '<tr>
-            <td>
+            <td class="col-sm-10">
                 <a href="page?id=' . $id . '">' . $value['name'] . '</a>
             </td>
-            <td>
+            <td class="col-sm-2">
                 <form method="post">
                     <button type="submit" name="deleteSites" class="btn btn-danger btn-xs" value="'.$id.'"><i class="fa fa-trash-o" title="Usuń Stronę"></i></button>
                 </form>
             </td>
-            <td>
+            <td class="col-sm-2">
                 <a href="edytuj-strone?id=' . $id . '"><i class="fa fa-cog" title="Edytuj Stronę"></i></a>
             </td>
         </tr>';
@@ -217,17 +218,17 @@ class User extends \Connect\Connect
         $question->bindValue(':idUser', $_SESSION['iduser'], PDO::PARAM_STR);
         $question->bindValue(':id', $id, PDO::PARAM_STR);
         $question->execute();
-        $youlike = $question->rowCount();
+        $youLike = $question->rowCount();
 
         $sql = "SELECT id FROM likesite WHERE idsite=:id";
         $question = \Connect\Connect::connect()->prepare($sql);
         $question->bindValue(':id', $id, PDO::PARAM_STR);
         $question->execute();
         $count = $question->rowCount();
-        if ($youlike == 1) {
-            echo '<button type="button" value="'.$id.'" name="UnlikeSite" id="UnlikeSite" class="btn btn-default btn-xs"><i class="fa fa-thumbs-o-down"></i>Już nie lubię <span class="badge">'.$count.'</span></button>';
-        } elseif ($youlike == 0) {
-            echo '<button type="button" value="'.$id.'" name="likeSite" id="likeSite" class="btn btn-success btn-xs "><i class="fa fa-thumbs-o-up"></i>Polub <span class="badge">'.$count.'</span></button>';
+        if ($youLike == 1) {
+            echo '<form method="post"><button type="submit" value="'.$id.'" name="UnlikeSite" class="btn btn-default btn-xs"><i class="fa fa-thumbs-o-down"></i>Już nie lubię <span class="badge">'.$count.'</span></button></form>';
+        } elseif ($youLike == 0) {
+            echo '<form method="post"><button type="submit" value="'.$id.'" name="likeSite" class="btn btn-success btn-xs "><i class="fa fa-thumbs-o-up"></i>Polub <span class="badge">'.$count.'</span></button></form>';
         } else {
             echo "Błąd z polubieniami stron";
         }
@@ -374,17 +375,13 @@ class User extends \Connect\Connect
 
     public static function searchCheckFriend($idFriend)
     {
-        $sql = "SELECT id FROM friendrequest WHERE ((fromUser=:id AND toUser=:idFriend) OR (fromUser=:idFriend AND toUser=:id)) AND status=1";
+        $sql = "SELECT id FROM friendrequest WHERE fromUser!=:id OR toUser!=:id ";
         $question = \Connect\Connect::connect()->prepare($sql);
         $question->bindValue(':id', $_SESSION['iduser'], PDO::PARAM_STR);
         $question->bindValue(':idFriend', $idFriend, PDO::PARAM_STR);
         $question->execute();
         $result = $question->rowCount();
-        if ($result == 1) {
-            echo '<form method="POST">
-                    <button type="submit" name="unfriend" class="btn btn-warning">Usuń ze znajomych</button>
-                  </form>';
-        } else {
+        if ($result == 0) {
             $sql = "SELECT id FROM friendrequest WHERE fromUser=:id AND toUser=:idFriend";
             $question = \Connect\Connect::connect()->prepare($sql);
             $question->bindValue(':id', $_SESSION['iduser'], PDO::PARAM_STR);
@@ -436,7 +433,7 @@ class User extends \Connect\Connect
         $result = $question->rowCount();
         if ($result == 1) {
             echo '<form method="POST">
-                    <button type="submit" name="unfriend" class="btn btn-warning">Usuń ze znajomych</button>
+                    <button type="submit" name="unfriend" value="'.$idFriend.'" class="btn btn-warning">Usuń ze znajomych</button>
                   </form>';
         } else {
             $sql = "SELECT id FROM friendrequest WHERE fromUser=:id AND toUser=:idFriend";
@@ -455,16 +452,16 @@ class User extends \Connect\Connect
 
             if ($countFrom == 1) {
                 echo '<form method="POST">
-                    <button type="submit" name="cancel" class="btn btn-danger">Anuluj Zaproszenie</button>
+                    <button type="submit" name="cancel" value="'.$idFriend.'" class="btn btn-danger">Anuluj Zaproszenie</button>
                   </form>';
             } else if ($countTo == 1) {
                 echo '<form method="POST">
-                    <button type="submit" name="ignore" class="btn btn-danger">Usuń Zaproszenie</button>
-                    <button type="submit" name="accept" class="btn btn-success">Akceptuj</button>
+                    <button type="submit" name="ignore" value="'.$idFriend.'" class="btn btn-danger">Usuń Zaproszenie</button>
+                    <button type="submit" name="accept" value="'.$idFriend.'" class="btn btn-success">Akceptuj</button>
                   </form>';
             } else {
                 echo '<form method="POST">
-                    <button type="submit" name="send" class="btn btn-success">Wyślij Zaproszenie</button>
+                    <button type="submit" name="send" value="'.$idFriend.'" class="btn btn-success">Wyślij Zaproszenie</button>
                   </form>';
             }
         }
@@ -691,19 +688,52 @@ class User extends \Connect\Connect
         foreach ($question as $value) {
             $id = $value['id'];
             echo '<tr>
-            <td>
+            <td class="col-sm-10">
                 <a href="grupa?id=' . $id . '">' . $value['nameGroup'] . '</a>
             </td>
-            <td>
+            <td class="col-sm-2">
                 <form method="post">
-                    <button type="submit" name="deleteGroup" class="btn btn-danger btn-xs" value="'.$id.'"><i class="fa fa-trash-o" title="Usuń Stronę"></i></button>
-                </form>
+                    <button type="submit" name="deleteGroup" class="btn btn-danger btn-xs" value="'.$id.'"><i class="fa fa-trash-o" title="Usuń Grupę">
+                 </form>
             </td>
-            <td>               
+            <td class="col-sm-2">               
                 <a href="edytuj-grupe?id=' . $id . '"><i class="fa fa-cog" title="Edytuj Grupę"></i></a>
             </td>
         </tr>';
         }
+    }
+    public static function GroupsBelong()
+    {
+        $sql = "SELECT g.id, g.nameGroup FROM membersgroup as m, groups as g WHERE g.id=m.idgroup AND m.iduser=:id";
+        $question = \Connect\Connect::connect()->prepare($sql);
+        $question->bindValue(':id', $_SESSION['iduser'], PDO::PARAM_STR);
+        $question->execute();
+
+        foreach ($question as $value) {
+            $id = $value['id'];
+            echo '<tr>
+            <td class="col-sm-10">
+                <a href="grupa?id=' . $id . '">' . $value['nameGroup'] . '</a>
+            </td>
+            <td class="col-sm-2">
+                <form method="post">
+                    <button type="submit" name="outGroup" class="btn btn-danger btn-xs" value="'.$id.'"><i class="fa fa-times-circle" title="Opuść Grupę"></i></button>
+                </form>
+            </td>
+            <td class="col-sm-2">               
+                <a href="grupa?id=' . $id . '"><i class="fa fa-eye" title="Zobacz"></i></a>
+            </td>
+        </tr>';
+        }
+    }
+
+    public static function outGroup($idgroup)
+    {
+        $sql = "DELETE FROM membersgroup WHERE idgroup=:idgroup AND iduser=:iduser";
+        $question = \Connect\Connect::connect()->prepare($sql);
+        $question->bindValue(':iduser', $_SESSION['iduser'], PDO::PARAM_STR);
+        $question->bindValue(':idgroup', $idgroup, PDO::PARAM_STR);
+        $question->execute();
     }
     public static function showStatusGroup($status)
     {
@@ -723,9 +753,9 @@ class User extends \Connect\Connect
     }
     public static function showMembersGroup($id)
     {
-        $sql = "SELECT u.id, u.name, u.surname FROM membersgroup as m, users as u WHERE u.id=m.iduser AND m.idgroup=:id";
-        $question = \Connect\Connect::connect()->query($sql);
-        $question->bindValue(':id', $id, PDO::PARAM_STR);
+        $sql = "SELECT u.id, u.name, u.surname FROM membersgroup as m, users as u WHERE u.id=m.iduser AND m.idgroup=:idgroup";
+        $question = \Connect\Connect::connect()->prepare($sql);
+        $question->bindValue(':idgroup', $id, PDO::PARAM_STR);
         $question->execute();
         foreach ($question as $value) {
             $idUser = $value['id'];
@@ -743,7 +773,7 @@ class User extends \Connect\Connect
     public static function showDeleteMembersGroup($idUser, $id)
     {
         $sql = "SELECT u.id FROM membersgroup as m, users as u, groups as g WHERE u.id=m.iduser=g.admin AND m.idgroup=:id AND m.iduser=g.admin AND m.iduser=:idUser";
-        $question = \Connect\Connect::connect()->query($sql);
+        $question = \Connect\Connect::connect()->prepare($sql);
         $question->bindValue(':id', $id, PDO::PARAM_STR);
         $question->bindValue(':idUser', $idUser, PDO::PARAM_STR);
         $question->execute();

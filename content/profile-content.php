@@ -4,6 +4,7 @@
         if($_SESSION['iduser'] != $id)
             \User\User::checkFriend($id);
     ?>
+    <br>
     <table class="table table-bordered">
         <tr>
             <td><b>Imie:</b></td>

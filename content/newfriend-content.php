@@ -11,7 +11,6 @@
     <div class="col-lg-12">
         <?php
             \User\User::showSearchFriend();
-//            NIEDOKOńczone
         ?>
     </div>
 </div>

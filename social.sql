@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Czas generowania: 30 Kwi 2017, 15:06
+-- Czas generowania: 07 Maj 2017, 11:31
 -- Wersja serwera: 10.1.16-MariaDB
 -- Wersja PHP: 7.0.9
 
@@ -58,7 +58,7 @@ CREATE TABLE `friendrequest` (
 --
 
 INSERT INTO `friendrequest` (`id`, `fromUser`, `toUser`, `status`) VALUES
-(11, 2, 1, 1);
+(26, 2, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -122,7 +122,6 @@ CREATE TABLE `likesite` (
 --
 
 INSERT INTO `likesite` (`id`, `idsite`, `iduser`) VALUES
-(1, 2, 1),
 (2, 1, 1);
 
 -- --------------------------------------------------------
@@ -142,10 +141,10 @@ CREATE TABLE `membersgroup` (
 --
 
 INSERT INTO `membersgroup` (`id`, `idgroup`, `iduser`) VALUES
-(1, 1, 1),
 (2, 1, 2),
 (7, 4, 2),
-(8, 4, 1);
+(8, 4, 1),
+(9, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -172,7 +171,8 @@ INSERT INTO `messages` (`id`, `fromUser`, `toUser`, `text`, `data`) VALUES
 (4, 1, 2, 'no witam', '2017-04-19 20:44:19'),
 (5, 1, 2, 'witam', '2017-04-20 17:40:37'),
 (6, 1, 2, 'admin ', '2017-04-24 09:05:55'),
-(7, 1, 2, 'elo siema', '2017-04-24 09:06:06');
+(7, 1, 2, 'elo siema', '2017-04-24 09:06:06'),
+(8, 1, 2, 'siema\n', '2017-05-06 15:58:25');
 
 -- --------------------------------------------------------
 
@@ -201,7 +201,8 @@ INSERT INTO `posts` (`id`, `typeAutor`, `idtype`, `idAutor`, `text`, `data`, `st
 (7, 3, 1, 1, '1 Post', '2017-04-22 21:01:59', 1),
 (9, 1, NULL, 2, 'Witam, to mój post', '2017-04-22 21:12:12', 1),
 (10, 2, 1, 2, 'witajcie here', '2017-04-22 22:20:47', 1),
-(12, 3, 4, 2, 'Siema', '2017-04-23 21:20:53', 1);
+(12, 3, 4, 2, 'Siema', '2017-04-23 21:20:53', 1),
+(13, 2, 2, 1, 'Witam', '2017-05-02 18:33:46', 1);
 
 -- --------------------------------------------------------
 
@@ -295,7 +296,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `surname`, `email`, `password`, `birth`, `home`, `work`, `school`, `phone`, `about`, `status`) VALUES
-(1, 'Patryk', 'Filipiak', 'thepatrykooo@gmail.com', '$2y$10$su3aFsr6aSeLFm54CLOfS.LGEy9JrgaLw4mlzNXmWDBXgpGpJwyWq', '2000-01-02', 'Explorer', 'Programista Brainfuck', 'ILO ILO', '73665', 'Jestem Patryk kappa Programista HTML Kappa', 0),
+(1, 'Patryk', 'Filipiak', 'thepatrykooo@gmail.com', '$2y$10$su3aFsr6aSeLFm54CLOfS.LGEy9JrgaLw4mlzNXmWDBXgpGpJwyWq', '2000-01-02', 'Here', 'Programista Brainfuck', 'ILO ILO', '736657933', 'Jestem Patryk kappa Programista Brainfuck Kappa', 0),
 (2, 'Jan', 'Kowalski', 'patrykowegry1@gmail.com', '$2y$10$JXxHaIaPHxItellEklmpFebmZ5zQaVPKQTgehzLmqQ3ZrCXQYj7xO', '1999-02-23', NULL, NULL, NULL, NULL, NULL, 0);
 
 --
@@ -387,7 +388,7 @@ ALTER TABLE `commentpost`
 -- AUTO_INCREMENT dla tabeli `friendrequest`
 --
 ALTER TABLE `friendrequest`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 --
 -- AUTO_INCREMENT dla tabeli `groups`
 --
@@ -407,17 +408,17 @@ ALTER TABLE `likesite`
 -- AUTO_INCREMENT dla tabeli `membersgroup`
 --
 ALTER TABLE `membersgroup`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 --
 -- AUTO_INCREMENT dla tabeli `messages`
 --
 ALTER TABLE `messages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT dla tabeli `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 --
 -- AUTO_INCREMENT dla tabeli `saved`
 --
