@@ -10,6 +10,15 @@
           <span class="icon-bar"></span>
         </button>
         <a class="navbar-brand" href="main">Social Site</a>
+
+        <form class="navbar-form search-form col-md-6 col-sm-3" role="search" method="post" action="szukaj">
+            <div class="input-group col-md-12">
+                <input type="text" class="form-control" name="search-navbar" placeholder="Szukaj...">
+                <div class="input-group-btn">
+                    <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                </div>
+            </div>
+        </form>
       </div>
       <div id="navbar" class="collapse navbar-collapse">
         <ul class="nav navbar-nav">
@@ -20,16 +29,7 @@
             <a href="moj-profil"><b class="fa fa-user-o"></b></a>
           </li>
           <li data-toggle="tooltip" title="Wiadomości">
-            <a class="dropdown-toggle" data-toggle="dropdown"><b class="fa fa-commenting-o"></b></a>
-            <ul class="dropdown-menu">
-              <h5><small><a href="messages">Wiadomości</a></small></h5>
-              <li class="messageTop">
-                <a href="#">Patryk Filipiak</a>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                quis nostrud exercitation</p>
-              </li>
-            </ul>
+            <a href="messages"><b class="fa fa-commenting-o"></b></a>
           </li> 
           <li data-toggle="tooltip" title="Zaproszenia">
             <a class="dropdown-toggle" data-toggle="dropdown"><b class="fa fa-user-plus"></b></a>

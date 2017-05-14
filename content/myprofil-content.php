@@ -40,7 +40,8 @@
         </tr>
     </table>
 
-    <h2 class="center-text">Znajomi</h2><br>
+    <h2 class="center-text"><a href="moi-znajomi">Moi Znajomi</a></h2><br>
+    <?php \User\User::showProfilFriends()?>
     <div class="col-lg-12">
         <h2 class="center-text">Wszystkie Moje Posty</h2><br>
         <form method="post">

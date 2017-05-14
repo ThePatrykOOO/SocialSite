@@ -7,6 +7,7 @@ if (isset($_SESSION['logged'])) {
 session_start();
 use \Sign\SignUp as SignUp;
 use PDO;
+use DateTime;
 class User extends \Connect\Connect
 {
     public static function youlogged()
@@ -423,7 +424,61 @@ class User extends \Connect\Connect
             \User\User::searchCheckFriend($id);
         }
     }
-    public static function checkFriend($idFriend)
+
+    public static function showProfilFriends($id = null)
+    {
+        $sql = "SELECT u.id, u.name, u.surname FROM friendrequest as f, users as u WHERE (f.fromUser=:id OR f.toUser=:id) AND u.id!=:id AND f.status=1 LIMIT 10";
+        $question = \Connect\Connect::connect()->prepare($sql);
+        if ($id == null) {
+            $question->bindValue(':id', $_SESSION['iduser'], PDO::PARAM_STR);
+        } else {
+            $question->bindValue(':id', $id, PDO::PARAM_STR);
+        }
+        $question->execute();
+        foreach ($question as $value) {
+            $fullname = $value['name'] . " " . $value['surname'];
+            $id = $value['id'];
+            echo '<div class="col-lg-6">
+                    <li class="list-group-item">
+                        <a href="profile?id=' . $id . '">' . $fullname . '</a> 
+                     </li>
+                    </div>';
+        }
+    }
+    public static function showAllMyFriends()
+    {
+        $sql = "SELECT u.id, u.name, u.surname FROM friendrequest as f, users as u WHERE (f.fromUser=:id OR f.toUser=:id) AND u.id!=:id AND f.status=1";
+        $question = \Connect\Connect::connect()->prepare($sql);
+        $question->bindValue(':id', $_SESSION['iduser'], PDO::PARAM_STR);
+        $question->execute();
+        foreach ($question as $value) {
+            $fullname = $value['name'] . " " . $value['surname'];
+            $id = $value['id'];
+            echo '<div class="col-lg-6">
+                    <li class="list-group-item">
+                        <a href="profile?id=' . $id . '">' . $fullname . '</a> 
+                     </li>
+                    </div>';
+        }
+    }
+
+    public static function showAllFriends($id = null)
+    {
+        $sql = "SELECT u.id, u.name, u.surname FROM friendrequest as f, users as u WHERE (f.fromUser=:id OR f.toUser=:id) AND u.id!=:id AND f.status=1";
+        $question = \Connect\Connect::connect()->prepare($sql);
+        $question->bindValue(':id', $id, PDO::PARAM_STR);
+        $question->execute();
+        foreach ($question as $value) {
+            $fullname = $value['name'] . " " . $value['surname'];
+            $id = $value['id'];
+            echo '<div class="col-lg-6">
+                    <li class="list-group-item">
+                        <a href="profile?id=' . $id . '">' . $fullname . '</a> 
+                     </li>
+                    </div>';
+        }
+    }
+    public static function checkFriend($idFriend = null)
     {
         $sql = "SELECT id FROM friendrequest WHERE ((fromUser=:id AND toUser=:idFriend) OR (fromUser=:idFriend AND toUser=:id)) AND status=1";
         $question = \Connect\Connect::connect()->prepare($sql);
@@ -599,7 +654,7 @@ class User extends \Connect\Connect
                      </li>
                     </div>';
         }
-    } //niedokończone
+    }
 
     private static function checkNameGroup($name)
     {
@@ -900,7 +955,9 @@ class User extends \Connect\Connect
             <h4>' . $fullname . '<small>' . $data . '</small></h4>
             <p>' . $text . '</p>
             <div class="optionsPost">
-                <button type="submit" value="'.$idPost.'" name="alreadyUnlike" class="btn btn-default btn-xs alreadyUnlike"><i class="fa fa-thumbs-o-up"></i>Lubię <span class="badge">'.$count.'</span></button>';
+                <form method="post">
+                <button type="submit" value="'.$idPost.'" name="alreadyUnlike" class="btn btn-default btn-xs alreadyUnlike"><i class="fa fa-thumbs-o-up"></i>Lubię <span class="badge">'.$count.'</span></button>
+                </form>';
     }
     private static function postIsUnlike($fullname,$data,$text,$idPost)
     {
@@ -909,7 +966,9 @@ class User extends \Connect\Connect
             <h4>' . $fullname . '<small>' . $data . '</small></h4>
             <p>' . $text . '</p>
             <div class="optionsPost">
-                <button type="submit" value="'.$idPost.'" class="btn btn-default btn-xs alreadyLike"><i class="fa fa-thumbs-o-down"></i>Nie lubię <span class="badge">'.$count.'</span></button>';
+                <form method="post">
+                <button type="submit" value="'.$idPost.'" class="btn btn-default btn-xs alreadyLike"><i class="fa fa-thumbs-o-down"></i>Nie lubię <span class="badge">'.$count.'</span></button>
+                </form>';
     }
     private static function postDefault($fullname,$data,$text,$idPost)
     {
@@ -919,8 +978,10 @@ class User extends \Connect\Connect
             <h4>' . $fullname . '<small>' . $data . '</small></h4>
             <p>' . $text . '</p>
             <div class="optionsPost">
-                <button type="button" value="'.$idPost.'" name="like" class="btn btn-success btn-xs likePost"><i class="fa fa-thumbs-o-up"></i>Polub <span class="badge">'.$countLike.'</span></button>
-                <button type="button" value="'.$idPost.'" name="unlike" class="btn btn-danger btn-xs unLikePost"><i class="fa fa-thumbs-o-down"></i>Nie lubię <span class="badge">'.$countUnlike.'</span></button>';
+                <form method="post">
+                <button type="submit" value="'.$idPost.'" name="like" class="btn btn-success btn-xs likePost"><i class="fa fa-thumbs-o-up"></i>Polub <span class="badge">'.$countLike.'</span></button>
+                <button type="submit" value="'.$idPost.'" name="unlike" class="btn btn-danger btn-xs unLikePost"><i class="fa fa-thumbs-o-down"></i>Nie lubię <span class="badge">'.$countUnlike.'</span></button>
+                </form>';
 
     }
     public static function likePost($idPost = null)
@@ -1014,7 +1075,7 @@ class User extends \Connect\Connect
                 $fullname = '<a href="profile?id='.$id.'">'.$value['name'] . " " . $value['surname'].'</a>';
 
             }
-            $data = $value['data'];
+            $data =  self::dateEdit($value['data']);
             $tmptext = $value['text'];
             $text = nl2br($tmptext);
 
@@ -1045,6 +1106,23 @@ class User extends \Connect\Connect
             echo '</div>
               </div>';
         }
+    }
+
+    public static function dateEdit($date)
+    {
+        $now = new DateTime(date('Y-m-d H:i:s'));
+        $day = DateTime::createFromFormat("Y",$date);
+        $thisHour = date('h');
+        $dateDB = new DateTime($date);
+        $interval = $now->diff($dateDB);
+        if ($thisHour == date("h")) {
+
+            return $interval->format('%h godzin temu');
+        } else {
+            return $interval->format('%d dni temu');
+        }
+
+
     }
     public static function showMainPost()
     {
@@ -1174,4 +1252,80 @@ class User extends \Connect\Connect
         }
     }
 
+    public static function searchNavbar($search)
+    {
+//        SEARCH users
+        $searchUsers = array();
+        $sql = "SELECT id, name, surname FROM users WHERE name LIKE '%$search%' OR surname LIKE '%$search%'";
+        $question = \Connect\Connect::connect()->prepare($sql);
+        $question->bindValue(':search', $search, PDO::PARAM_STR);
+        $question->execute();
+        foreach ($question as $value) {
+            array_push($searchUsers, array($value['id'], $value['name'], $value['surname']));
+        }
+//          SEARCH groups
+        $searchGroup = array();
+        $sql = "SELECT id, nameGroup FROM groups WHERE nameGroup LIKE '%$search%'";
+        $question = \Connect\Connect::connect()->prepare($sql);
+        $question->bindValue(':search', $search, PDO::PARAM_STR);
+        $question->execute();
+        foreach ($question as $value) {
+            array_push($searchGroup, array($value['id'],$value['nameGroup']));
+        }
+//          SEARCH sites
+        $searchSites = array();
+        $sql = "SELECT idsite, name FROM sites WHERE name LIKE '%$search%'";
+        $question = \Connect\Connect::connect()->prepare($sql);
+        $question->bindValue(':search', $search, PDO::PARAM_STR);
+        $question->execute();
+        foreach ($question as $value) {
+            array_push($searchSites, array($value['idsite'],$value['name']));
+        }
+//        Pokazywanie wyników
+        if (count($searchUsers) == 0 && count($searchGroup) == 0 && count($searchSites) == 0 ) {
+            echo '<h6 class="center-text">Nic nie znaleziono, być może coś źle wpisałeś</h6><br>';
+        } else {
+            $searchFull = array($searchUsers,$searchGroup,$searchSites);
+            $searchFullCount = count($searchUsers) + count($searchGroup) + count($searchSites);
+            echo "<i>Znaleziono $searchFullCount wyników pod hasłem <b>$search</b></i><br>";
+            echo "<h5>Użytkownicy</h5>
+            <div class='col-lg-12'>";
+                self::searchUsers($searchUsers);
+            echo "</div>";
+            echo "<h5>Strony</h5>
+            <div class='col-lg-12'>";
+                self::searchSites($searchSites);
+            echo "</div>";
+            echo "<h5>Grupy</h5>
+            <div class='col-lg-12'>";
+                self::searchGroup($searchGroup);
+            echo "</div>";
+
+        }
+    }
+
+    private static function searchUsers($searchUsers)
+    {
+        foreach ($searchUsers as $value) {
+            echo '<div class="col-lg-6 col-md-6">
+                <a href="profile?id='.$value[0].'">'.$value[1].' '. $value[2].'</a>
+            </div>';
+        }
+    }
+    private static function searchGroup($searchGroup)
+    {
+        foreach ($searchGroup as $value) {
+            echo '<div class="col-lg-6 col-md-6">
+                <a href="grupa?id='.$value[0].'">'.$value[1].'</a>
+            </div>';
+        }
+    }
+    private static function searchSites($searchSites)
+    {
+        foreach ($searchSites as $value) {
+            echo '<div class="col-lg-6 col-md-6">
+                <a href="page?id='.$value[0].'">'.$value[1].'</a>
+            </div>';
+        }
+    }
 }

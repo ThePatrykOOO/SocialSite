@@ -43,7 +43,8 @@
         </tr>
     </table>
 
-    <h4 class="center-text">Znajomi</h4><br>
+    <h4 class="center-text"><a href="znajomi?id=<?php echo $id ?>">Znajomi</a></h4><br>
+    <?php \User\User::showProfilFriends($id) ?>
     <div class="col-lg-12">
         <h4 class="center-text">Posty</h4><br>
         <form method="post">

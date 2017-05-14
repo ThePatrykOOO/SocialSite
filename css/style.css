@@ -50,6 +50,38 @@ footer {
 	padding: 1em;
 	text-align: center;
 }
+.search-form {
+	display: inline-block;
+}
+@media (max-width: 768px) {
+	.search-form {
+		display: none;
+	}
+}
+.fa-user-o:after {
+	content: ' Twój profil';
+}
+.fa-commenting-o:after {
+	content: ' Wiadomości';
+}
+.fa-user-plus:after {
+	content: ' Zaproszenia';
+}
+.fa-cog:after {
+	content: ' Ustawienia';
+}
+.fa-sign-in:after {
+	content: ' Wyloguj Się';
+}
+@media (min-width: 768px) {
+	.fa-user-o:after,
+	.fa-commenting-o:after,
+	.fa-user-plus:after,
+	.fa-cog:after,
+	.fa-sign-in:after {
+		display: none;
+	}
+}
 .edit-profil {
 	width: 100%;
 	border-spacing:15px 30px;
@@ -155,3 +187,4 @@ footer {
 		color: #ffffff;
 	}
 }
+
