@@ -17,7 +17,7 @@
   </div>
   <div id="posts">
       <?php
-      $user->showMainPost();
+      $user->showMainPost($from, $limit);
       ?>
   </div>
 </div><!-- Posts -->

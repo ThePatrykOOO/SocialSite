@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Czas generowania: 14 Maj 2017, 10:50
+-- Czas generowania: 07 Maj 2017, 11:31
 -- Wersja serwera: 10.1.16-MariaDB
 -- Wersja PHP: 7.0.9
 
@@ -38,8 +38,7 @@ CREATE TABLE `commentpost` (
 --
 
 INSERT INTO `commentpost` (`id`, `idpost`, `idAutor`, `comment`) VALUES
-(1, 6, 1, 'No witam witam'),
-(2, 16, 1, 'kappa');
+(1, 6, 1, 'No witam witam');
 
 -- --------------------------------------------------------
 
@@ -59,7 +58,7 @@ CREATE TABLE `friendrequest` (
 --
 
 INSERT INTO `friendrequest` (`id`, `fromUser`, `toUser`, `status`) VALUES
-(1, 1, 2, 1);
+(26, 2, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -104,9 +103,7 @@ INSERT INTO `likepost` (`id`, `idpost`, `idperson`, `status`) VALUES
 (36, 35, 1, 1),
 (93, 39, 1, 1),
 (95, 1, 1, 1),
-(96, 7, 2, 0),
-(109, 14, 1, 0),
-(111, 6, 1, 0);
+(96, 7, 2, 0);
 
 -- --------------------------------------------------------
 
@@ -145,6 +142,7 @@ CREATE TABLE `membersgroup` (
 
 INSERT INTO `membersgroup` (`id`, `idgroup`, `iduser`) VALUES
 (2, 1, 2),
+(7, 4, 2),
 (8, 4, 1),
 (9, 1, 1);
 
@@ -204,10 +202,7 @@ INSERT INTO `posts` (`id`, `typeAutor`, `idtype`, `idAutor`, `text`, `data`, `st
 (9, 1, NULL, 2, 'Witam, to mój post', '2017-04-22 21:12:12', 1),
 (10, 2, 1, 2, 'witajcie here', '2017-04-22 22:20:47', 1),
 (12, 3, 4, 2, 'Siema', '2017-04-23 21:20:53', 1),
-(13, 2, 2, 1, 'Witam', '2017-05-02 18:33:46', 1),
-(14, 1, NULL, 1, 'Data :D', '2017-05-11 18:35:44', 1),
-(15, 1, NULL, 1, 'witaj', '2017-05-11 18:46:55', 1),
-(16, 1, NULL, 1, 'witanko', '2017-05-11 18:51:26', 1);
+(13, 2, 2, 1, 'Witam', '2017-05-02 18:33:46', 1);
 
 -- --------------------------------------------------------
 
@@ -388,12 +383,12 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT dla tabeli `commentpost`
 --
 ALTER TABLE `commentpost`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT dla tabeli `friendrequest`
 --
 ALTER TABLE `friendrequest`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 --
 -- AUTO_INCREMENT dla tabeli `groups`
 --
@@ -403,7 +398,7 @@ ALTER TABLE `groups`
 -- AUTO_INCREMENT dla tabeli `likepost`
 --
 ALTER TABLE `likepost`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=112;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
 --
 -- AUTO_INCREMENT dla tabeli `likesite`
 --
@@ -423,7 +418,7 @@ ALTER TABLE `messages`
 -- AUTO_INCREMENT dla tabeli `posts`
 --
 ALTER TABLE `posts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 --
 -- AUTO_INCREMENT dla tabeli `saved`
 --

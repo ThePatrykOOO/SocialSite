@@ -8,7 +8,14 @@
     <script src="../js/ajax.js"></script>
     <script src="../js/social.js"></script>
     <?php
-        \Page\Page::addJS();
+    if(isset($_GET['id'])) {
+        echo '<script>
+                    function id() {
+                      return '.$_GET['id'].';
+                    }
+                    </script>';
+    }
+    \Page\Page::addJS();
     ?>
 </body>
 </html>

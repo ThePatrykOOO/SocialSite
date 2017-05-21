@@ -23,7 +23,9 @@ $(document).ready(function () {
             success: function (data) {
                 showMessage();
                 $(".messenger").html(data);
+                message = '';
             }
         });
+
     });
 });

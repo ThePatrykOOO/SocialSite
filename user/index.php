@@ -5,6 +5,12 @@ if(isset($_POST['alreadyUnlike'])) \User\User::alreadyUnlike($_POST['alreadyUnli
 if(isset($_POST['unlike'])) \User\User::unLikePost($_POST['unlike']);
 if(isset($_POST['alreadyLike'])) \User\User::alreadyLike($_POST['alreadyLike']);
 if (isset($_POST['postText'])) \User\User::addPost($typeAutor=1,$_POST['postText']);
+$page = isset($_GET['page']) ? strval($_GET['page']):1;
+
+$page -=1;
+$limit = 2;
+$from = $page * $limit;
+
 ?>
 <?php include '../includes/head.php';?>
 <?php include '../includes/navbar.php';?>

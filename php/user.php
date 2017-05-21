@@ -611,6 +611,7 @@ class User extends \Connect\Connect
             $question->bindValue(':message', $message, PDO::PARAM_STR);
             $question->execute();
         }
+        $message = '';
     }
     public static function showMessages($idToSent)
     {
@@ -1124,7 +1125,7 @@ class User extends \Connect\Connect
 
 
     }
-    public static function showMainPost()
+    public static function showMainPost($from, $limit)
     {
         $idPost = array();
 //        moje posty
@@ -1161,8 +1162,9 @@ class User extends \Connect\Connect
         }
 
 
-
         rsort($idPost);
+        $count = count($idPost);
+
         for ($i = 0; $i < count($idPost); $i++) {
             $value = intval($idPost[$i]);
             $sql = "SELECT u.id as idUser, u.name,s.name as nameSite, u.surname, p.id as idPost, p.text, p.data,p.typeAutor, p.idtype FROM posts as p, users as u, sites as s WHERE p.id='".$value."' AND u.id=p.idAutor=s.admin";

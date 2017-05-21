@@ -42,13 +42,13 @@
         <div class="cover-container">
           <div class="masthead clearfix">
             <div class="inner">
-              <h3 class="masthead-brand">Social Site</h3>
+              <h3 class="masthead-brand"><a href="index.php">Social Site</a></h3>
               <nav>
                 <ul class="nav masthead-nav">
-                  <li class="active"><a href="#home">Home</a></li>
-                  <li><a href="#login">Zaloguj</a></li>
-                  <li><a href="#restiger">Rejestracja</a></li>
-                  <li><a href="#about">O nas</a></li>
+                  <li class="active" id="homeLink"><a href="#home">Home</a></li>
+                  <li id="loginLink"><a href="#login">Zaloguj</a></li>
+                  <li id="restigerLink"><a href="#restiger">Rejestracja</a></li>
+                  <li id="aboutLink"><a href="#about">O nas</a></li>
                 </ul>
               </nav>
             </div>
@@ -138,7 +138,9 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="js/animatescroll.js"></script>
     <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="js/hello.js"></script>
     <script src="js/bootstrap.min.js"></script>
   </body>
 </html>
